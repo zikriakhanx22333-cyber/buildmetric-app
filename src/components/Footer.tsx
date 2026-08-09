@@ -1,26 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Logo } from './Logo';
-import { Shield, FileText, Lock, Mail, Phone, MapPin, Calculator, Heart, ArrowUpRight } from 'lucide-react';
+import { Shield, Lock, Calculator } from 'lucide-react';
 import { CATEGORIES, CALCULATORS } from '../data/calculators';
-import { CalculatorId, CategoryId } from '../types';
+import { getSlugFromId } from '../utils/slugs';
 
 interface FooterProps {
-  setActiveView: (view: string) => void;
-  setSelectedCalculatorId: (id: CalculatorId | null) => void;
-  setSelectedCategoryId: (id: CategoryId | null) => void;
   onOpenDisclaimer: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({
-  setActiveView,
-  setSelectedCalculatorId,
-  setSelectedCategoryId,
-  onOpenDisclaimer,
-}) => {
-  const handleNav = (view: string, calcId?: CalculatorId, catId?: CategoryId) => {
-    setActiveView(view);
-    if (calcId !== undefined) setSelectedCalculatorId(calcId);
-    if (catId !== undefined) setSelectedCategoryId(catId);
+export const Footer: React.FC<FooterProps> = ({ onOpenDisclaimer }) => {
+  const navigate = useNavigate();
+
+  const navigateTo = (url: string) => {
+    navigate(url);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -59,8 +52,8 @@ export const Footer: React.FC<FooterProps> = ({
               {CALCULATORS.slice(0, 6).map((calc) => (
                 <li key={calc.id}>
                   <button
-                    onClick={() => handleNav('calculator-detail', calc.id, calc.categoryId)}
-                    className="hover:text-[#F4B400] transition-colors text-left line-clamp-1"
+                    onClick={() => navigateTo(`/calculators/${getSlugFromId(calc.id)}`)}
+                    className="hover:text-[#F4B400] transition-colors text-left line-clamp-1 cursor-pointer"
                   >
                     {calc.title}
                   </button>
@@ -78,8 +71,8 @@ export const Footer: React.FC<FooterProps> = ({
               {CATEGORIES.map((cat) => (
                 <li key={cat.id}>
                   <button
-                    onClick={() => handleNav('category-detail', null, cat.id)}
-                    className="hover:text-[#F4B400] transition-colors text-left"
+                    onClick={() => navigateTo(`/categories/${cat.id}`)}
+                    className="hover:text-[#F4B400] transition-colors text-left cursor-pointer"
                   >
                     {cat.name}
                   </button>
@@ -95,32 +88,32 @@ export const Footer: React.FC<FooterProps> = ({
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <button onClick={() => handleNav('about')} className="hover:text-[#F4B400] transition-colors">
+                <button onClick={() => navigateTo('/about')} className="hover:text-[#F4B400] transition-colors cursor-pointer">
                   About BuildMetric
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('blog')} className="hover:text-[#F4B400] transition-colors">
+                <button onClick={() => navigateTo('/blog')} className="hover:text-[#F4B400] transition-colors cursor-pointer">
                   Engineering Blog
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('contact')} className="hover:text-[#F4B400] transition-colors">
+                <button onClick={() => navigateTo('/contact')} className="hover:text-[#F4B400] transition-colors cursor-pointer">
                   Contact Support
                 </button>
               </li>
               <li>
-                <button onClick={onOpenDisclaimer} className="hover:text-[#F4B400] transition-colors">
+                <button onClick={onOpenDisclaimer} className="hover:text-[#F4B400] transition-colors cursor-pointer">
                   Engineering Disclaimer
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('privacy')} className="hover:text-[#F4B400] transition-colors">
+                <button onClick={() => navigateTo('/privacy')} className="hover:text-[#F4B400] transition-colors cursor-pointer">
                   Privacy Policy
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('terms')} className="hover:text-[#F4B400] transition-colors">
+                <button onClick={() => navigateTo('/terms')} className="hover:text-[#F4B400] transition-colors cursor-pointer">
                   Terms of Service
                 </button>
               </li>
@@ -142,11 +135,11 @@ export const Footer: React.FC<FooterProps> = ({
             © {new Date().getFullYear()} BuildMetric. All rights reserved. Smart Construction Calculators & Estimation Tools.
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={() => handleNav('privacy')} className="hover:underline">Privacy</button>
+            <button onClick={() => navigateTo('/privacy')} className="hover:underline cursor-pointer">Privacy</button>
             <span>•</span>
-            <button onClick={() => handleNav('terms')} className="hover:underline">Terms</button>
+            <button onClick={() => navigateTo('/terms')} className="hover:underline cursor-pointer">Terms</button>
             <span>•</span>
-            <button onClick={onOpenDisclaimer} className="hover:underline">Disclaimer</button>
+            <button onClick={onOpenDisclaimer} className="hover:underline cursor-pointer">Disclaimer</button>
           </div>
         </div>
 

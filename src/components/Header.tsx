@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
-import { Search, Menu, X, ChevronDown, Calculator, BookOpen, Info, Mail, PhoneCall, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Calculator, ArrowRight } from 'lucide-react';
 import { CATEGORIES, CALCULATORS } from '../data/calculators';
 import { CalculatorId, CategoryId } from '../types';
+import { getSlugFromId } from '../utils/slugs';
 
 interface HeaderProps {
-  activeView: string;
-  setActiveView: (view: string) => void;
-  selectedCalculatorId: CalculatorId | null;
-  setSelectedCalculatorId: (id: CalculatorId | null) => void;
-  selectedCategoryId: CategoryId | null;
-  setSelectedCategoryId: (id: CategoryId | null) => void;
   onSearchOpen: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  activeView,
-  setActiveView,
-  selectedCalculatorId,
-  setSelectedCalculatorId,
-  selectedCategoryId,
-  setSelectedCategoryId,
-  onSearchOpen,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ onSearchOpen }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
@@ -36,10 +26,10 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (view: string, calcId?: CalculatorId, catId?: CategoryId) => {
-    setActiveView(view);
-    if (calcId !== undefined) setSelectedCalculatorId(calcId);
-    if (catId !== undefined) setSelectedCategoryId(catId);
+  const path = location.pathname;
+
+  const navigateTo = (url: string) => {
+    navigate(url);
     setMobileMenuOpen(false);
     setCategoriesDropdownOpen(false);
     setCalculatorsDropdownOpen(false);
@@ -53,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
           
           {/* Logo */}
           <button 
-            onClick={() => handleNavClick('home', null, null)}
+            onClick={() => navigateTo('/')}
             className="text-left focus:outline-none focus:ring-2 focus:ring-[#0F2D5C] rounded-lg p-1 -ml-1"
           >
             <Logo />
@@ -64,8 +54,8 @@ export const Header: React.FC<HeaderProps> = ({
             
             {/* Home */}
             <button
-              onClick={() => handleNavClick('home', null, null)}
-              className={`px-3 py-2 rounded-md transition-colors ${activeView === 'home' && !selectedCalculatorId ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
+              onClick={() => navigateTo('/')}
+              className={`px-3 py-2 rounded-md transition-colors ${path === '/' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
             >
               Home
             </button>
@@ -73,9 +63,9 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Calculators Dropdown */}
             <div className="relative group">
               <button
-                onClick={() => handleNavClick('calculators-all', null, null)}
+                onClick={() => navigateTo('/calculators')}
                 onMouseEnter={() => setCalculatorsDropdownOpen(true)}
-                className={`flex items-center gap-1 px-3 py-2 rounded-md transition-colors ${activeView === 'calculators-all' || selectedCalculatorId ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
+                className={`flex items-center gap-1 px-3 py-2 rounded-md transition-colors ${path.startsWith('/calculators') ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
               >
                 <span>Calculators</span>
                 <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-[#0F2D5C]" />
@@ -94,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {CALCULATORS.filter(c => c.popular).slice(0, 7).map((calc) => (
                     <button
                       key={calc.id}
-                      onClick={() => handleNavClick('calculator-detail', calc.id, calc.categoryId)}
+                      onClick={() => navigateTo(`/calculators/${getSlugFromId(calc.id)}`)}
                       className="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50/80 transition-colors flex items-center justify-between group/item"
                     >
                       <div>
@@ -110,10 +100,10 @@ export const Header: React.FC<HeaderProps> = ({
                   ))}
                   <div className="pt-2 border-t border-slate-100">
                     <button
-                      onClick={() => handleNavClick('calculators-all', null, null)}
+                      onClick={() => navigateTo('/calculators')}
                       className="w-full text-center py-2 text-xs font-bold text-[#0F2D5C] bg-slate-50 rounded-lg hover:bg-blue-100/60 transition-colors"
                     >
-                      View All 11+ Construction Tools →
+                      View All Tools →
                     </button>
                   </div>
                 </div>
@@ -123,8 +113,8 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Categories Dropdown */}
             <div className="relative group">
               <button
-                onClick={() => handleNavClick('categories-all', null, null)}
-                className={`flex items-center gap-1 px-3 py-2 rounded-md transition-colors ${activeView === 'categories-all' || selectedCategoryId ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
+                onClick={() => navigateTo('/categories')}
+                className={`flex items-center gap-1 px-3 py-2 rounded-md transition-colors ${path.startsWith('/categories') ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
               >
                 <span>Categories</span>
                 <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-[#0F2D5C]" />
@@ -138,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {CATEGORIES.map((cat) => (
                     <button
                       key={cat.id}
-                      onClick={() => handleNavClick('category-detail', null, cat.id)}
+                      onClick={() => navigateTo(`/categories/${cat.id}`)}
                       className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-between"
                     >
                       <span className="text-sm font-medium text-slate-800">{cat.name}</span>
@@ -151,24 +141,24 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Blog */}
             <button
-              onClick={() => handleNavClick('blog', null, null)}
-              className={`px-3 py-2 rounded-md transition-colors ${activeView === 'blog' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
+              onClick={() => navigateTo('/blog')}
+              className={`px-3 py-2 rounded-md transition-colors ${path === '/blog' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
             >
               Blog
             </button>
 
             {/* About */}
             <button
-              onClick={() => handleNavClick('about', null, null)}
-              className={`px-3 py-2 rounded-md transition-colors ${activeView === 'about' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
+              onClick={() => navigateTo('/about')}
+              className={`px-3 py-2 rounded-md transition-colors ${path === '/about' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
             >
               About
             </button>
 
             {/* Contact */}
             <button
-              onClick={() => handleNavClick('contact', null, null)}
-              className={`px-3 py-2 rounded-md transition-colors ${activeView === 'contact' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
+              onClick={() => navigateTo('/contact')}
+              className={`px-3 py-2 rounded-md transition-colors ${path === '/contact' ? 'text-[#0F2D5C] bg-blue-50 font-bold' : 'hover:text-[#0F2D5C] hover:bg-slate-100'}`}
             >
               Contact
             </button>
@@ -180,7 +170,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Quick Search Button */}
             <button
               onClick={onSearchOpen}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs sm:text-sm font-medium transition-colors border border-slate-200"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs sm:text-sm font-medium transition-colors border border-slate-200 cursor-pointer"
               title="Search tools"
             >
               <Search className="w-4 h-4 text-[#0F2D5C]" />
@@ -192,8 +182,8 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* CTA Button */}
             <button
-              onClick={() => handleNavClick('calculators-all', null, null)}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] text-xs sm:text-sm font-bold shadow-sm transition-all"
+              onClick={() => navigateTo('/calculators')}
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer"
             >
               <Calculator className="w-4 h-4" />
               <span>All Tools</span>
@@ -202,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none"
+              className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none cursor-pointer"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -217,37 +207,37 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-2xl animate-in slide-in-from-top duration-200">
           <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-100">
             <button
-              onClick={() => handleNavClick('home', null, null)}
+              onClick={() => navigateTo('/')}
               className="text-left px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold"
             >
               Home
             </button>
             <button
-              onClick={() => handleNavClick('calculators-all', null, null)}
+              onClick={() => navigateTo('/calculators')}
               className="text-left px-3 py-2.5 rounded-lg bg-blue-50 text-[#0F2D5C] text-sm font-bold"
             >
               All Calculators
             </button>
             <button
-              onClick={() => handleNavClick('categories-all', null, null)}
+              onClick={() => navigateTo('/categories')}
               className="text-left px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold"
             >
               Categories
             </button>
             <button
-              onClick={() => handleNavClick('blog', null, null)}
+              onClick={() => navigateTo('/blog')}
               className="text-left px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold"
             >
               Engineering Blog
             </button>
             <button
-              onClick={() => handleNavClick('about', null, null)}
+              onClick={() => navigateTo('/about')}
               className="text-left px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold"
             >
               About Us
             </button>
             <button
-              onClick={() => handleNavClick('contact', null, null)}
+              onClick={() => navigateTo('/contact')}
               className="text-left px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold"
             >
               Contact Support
@@ -262,7 +252,7 @@ export const Header: React.FC<HeaderProps> = ({
               {CALCULATORS.map((calc) => (
                 <button
                   key={calc.id}
-                  onClick={() => handleNavClick('calculator-detail', calc.id, calc.categoryId)}
+                  onClick={() => navigateTo(`/calculators/${getSlugFromId(calc.id)}`)}
                   className="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50/80 text-sm font-medium text-slate-700 flex items-center justify-between"
                 >
                   <span>{calc.title}</span>
