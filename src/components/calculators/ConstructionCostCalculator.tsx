@@ -1,70 +1,95 @@
 import React, { useState } from 'react';
 import { ConstructionCostInputs, ConstructionCostResults } from '../../types';
 import { calculateConstructionCost } from '../../utils/calculatorLogic';
-import { RotateCcw, Copy, Printer, Check, Calculator, PieChart, DollarSign, Sparkles } from 'lucide-react';
+import { RotateCcw, Copy, Printer, Check, Calculator, DollarSign, Sparkles, HelpCircle, ChevronDown, ChevronUp, Layers, Coins } from 'lucide-react';
 import { PrintModal } from '../PrintModal';
 
 export const ConstructionCostCalculator: React.FC = () => {
   const [inputs, setInputs] = useState<ConstructionCostInputs>({
-    builtUpAreaSqFt: 1200, // standard house size 1200 sqft
-    qualityGrade: 'standard',
-    unitCostPerSqFt: 32, // ~$32 per sqft standard construction rate
-    cementPricePerBag: 8,
-    sandPricePerCft: 1.5,
-    aggregatePricePerCft: 1.2,
-    steelPricePerKg: 1.1,
-    brickPricePerPiece: 0.15,
-    laborCostPerSqFt: 8,
+    currency: 'SAR',
+    builtUpAreaM2: 150,
+    cementPricePerBag: 15.5,
+    sandPricePerM3: 45,
+    aggregatePricePerM3: 50,
+    brickPricePerPiece: 3.2,
+    steelPricePerKg: 3.5,
+    tilePricePerM2: 40,
+    paintPricePerLiter: 25,
+    masonDailyWage: 180,
+    masonDaysCount: 38,
+    helperDailyWage: 100,
+    helperDaysCount: 52,
+    transportation: 2500,
+    otherExpenses: 5000,
+    contingencyPercent: 5,
   });
 
   const [copied, setCopied] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
+  const [showAssumptions, setShowAssumptions] = useState(false);
 
   const handleChange = (field: keyof ConstructionCostInputs, val: any) => {
     setInputs(prev => ({ ...prev, [field]: val }));
   };
 
-  const handleQualityChange = (grade: 'basic' | 'standard' | 'premium') => {
-    let rate = 32;
-    if (grade === 'basic') rate = 20;
-    if (grade === 'premium') rate = 50;
-
-    setInputs(prev => ({
-      ...prev,
-      qualityGrade: grade,
-      unitCostPerSqFt: rate,
-    }));
-  };
-
   const handleReset = () => {
     setInputs({
-      builtUpAreaSqFt: 1200,
-      qualityGrade: 'standard',
-      unitCostPerSqFt: 32,
-      cementPricePerBag: 8,
-      sandPricePerCft: 1.5,
-      aggregatePricePerCft: 1.2,
-      steelPricePerKg: 1.1,
-      brickPricePerPiece: 0.15,
-      laborCostPerSqFt: 8,
+      currency: 'SAR',
+      builtUpAreaM2: 150,
+      cementPricePerBag: 15.5,
+      sandPricePerM3: 45,
+      aggregatePricePerM3: 50,
+      brickPricePerPiece: 3.2,
+      steelPricePerKg: 3.5,
+      tilePricePerM2: 40,
+      paintPricePerLiter: 25,
+      masonDailyWage: 180,
+      masonDaysCount: 38,
+      helperDailyWage: 100,
+      helperDaysCount: 52,
+      transportation: 2500,
+      otherExpenses: 5000,
+      contingencyPercent: 5,
     });
   };
 
   const results: ConstructionCostResults = calculateConstructionCost(inputs);
+  const curr = results.currency || 'SAR';
 
   const getResultsText = () => {
-    return `Construction Budget Estimation (BuildMetric):
-- Built-up Area: ${inputs.builtUpAreaSqFt} Sq Ft
-- Quality Tier: ${inputs.qualityGrade.toUpperCase()} ($${inputs.unitCostPerSqFt}/sq ft)
-- Total Estimated Project Budget: $${results.totalEstimatedCost.toLocaleString()}
-- Cement Budget Share (16%): $${results.cementCost.toLocaleString()}
-- Steel Rebar Share (15%): $${results.steelCost.toLocaleString()}
-- Sand Budget Share (8%): $${results.sandCost.toLocaleString()}
-- Aggregate Share (7%): $${results.aggregateCost.toLocaleString()}
-- Bricks & Masonry (10%): $${results.brickCost.toLocaleString()}
-- Finishing & Tiles (16%): $${results.finishingCost.toLocaleString()}
-- Doors, Windows & Fittings (8%): $${results.fittingsCost.toLocaleString()}
-- Labor & Contracting (20%): $${results.laborCost.toLocaleString()}`;
+    return `BuildMetric Construction Calculation Report
+Date: ${new Date().toLocaleDateString()}
+Calculator: Building Construction Cost Estimator (${curr})
+
+INPUT SUMMARY:
+- Built-up Area: ${results.builtUpAreaM2} m² (${results.builtUpAreaSqFt} Sq Ft)
+- Currency: ${curr}
+- Cement Price per Bag: ${curr} ${inputs.cementPricePerBag}
+- Sand Price per m³: ${curr} ${inputs.sandPricePerM3}
+- Aggregate Price per m³: ${curr} ${inputs.aggregatePricePerM3}
+- Brick Price per Piece: ${curr} ${inputs.brickPricePerPiece}
+- Steel Price per kg: ${curr} ${inputs.steelPricePerKg}
+- Tile Price per m²: ${curr} ${inputs.tilePricePerM2}
+- Paint Price per Liter: ${curr} ${inputs.paintPricePerLiter}
+- Mason Daily Wage: ${curr} ${inputs.masonDailyWage} (${results.laborBreakdown.masonDays} days)
+- Helper Daily Wage: ${curr} ${inputs.helperDailyWage} (${results.laborBreakdown.helperDays} days)
+- Transportation: ${curr} ${inputs.transportation}
+- Other Expenses: ${curr} ${inputs.otherExpenses}
+- Contingency Margin: ${inputs.contingencyPercent}%
+
+CALCULATION RESULTS:
+- Material Cost: ${curr} ${results.materialCost.toLocaleString()}
+- Labor Cost: ${curr} ${results.laborCost.toLocaleString()}
+- Transportation: ${curr} ${results.transportation.toLocaleString()}
+- Other Expenses: ${curr} ${results.otherExpenses.toLocaleString()}
+- Contingency (${inputs.contingencyPercent}%): ${curr} ${results.contingency.toLocaleString()}
+- Total Project Cost: ${curr} ${results.grandTotal.toLocaleString()}
+- Cost per m²: ${curr} ${results.costPerM2.toLocaleString()}
+- Cost per sq ft: ${curr} ${results.costPerSqFt.toLocaleString()}
+
+FORMULA & ASSUMPTIONS:
+- Material quantities estimated using standard civil engineering factors per m² of built-up area.
+- Grand Total = Material Cost + Labor Cost + Transportation + Other Expenses + Contingency.`;
   };
 
   const handleCopy = () => {
@@ -74,170 +99,383 @@ export const ConstructionCostCalculator: React.FC = () => {
   };
 
   const printTableData = [
-    { label: 'Built-Up Area', value: inputs.builtUpAreaSqFt, unit: 'Sq Ft' },
-    { label: 'Quality Grade Specification', value: inputs.qualityGrade.toUpperCase() },
-    { label: 'Base Rate per Sq Ft', value: `$${inputs.unitCostPerSqFt}` },
-    { label: 'Total Project Budget', value: `$${results.totalEstimatedCost.toLocaleString()}` },
-    { label: 'Cement Cost Share (16%)', value: `$${results.cementCost.toLocaleString()}` },
-    { label: 'Steel Rebar Share (15%)', value: `$${results.steelCost.toLocaleString()}` },
-    { label: 'Sand Cost Share (8%)', value: `$${results.sandCost.toLocaleString()}` },
-    { label: 'Coarse Aggregate Share (7%)', value: `$${results.aggregateCost.toLocaleString()}` },
-    { label: 'Bricks & Masonry (10%)', value: `$${results.brickCost.toLocaleString()}` },
-    { label: 'Finishing & Tiles (16%)', value: `$${results.finishingCost.toLocaleString()}` },
-    { label: 'Fittings & Electrical (8%)', value: `$${results.fittingsCost.toLocaleString()}` },
-    { label: 'Labor Expenses (20%)', value: `$${results.laborCost.toLocaleString()}` },
+    { label: 'Built-up Area (m²)', value: results.builtUpAreaM2, unit: 'm²' },
+    { label: 'Built-up Area (Sq Ft)', value: results.builtUpAreaSqFt, unit: 'Sq Ft' },
+    { label: 'Material Cost Total', value: `${curr} ${results.materialCost.toLocaleString()}` },
+    { label: 'Labor Cost Total', value: `${curr} ${results.laborCost.toLocaleString()}` },
+    { label: 'Transportation Expenses', value: `${curr} ${results.transportation.toLocaleString()}` },
+    { label: 'Other Project Expenses', value: `${curr} ${results.otherExpenses.toLocaleString()}` },
+    { label: `Contingency Margin (${inputs.contingencyPercent}%)`, value: `${curr} ${results.contingency.toLocaleString()}` },
+    { label: 'Total Project Cost', value: `${curr} ${results.grandTotal.toLocaleString()}` },
+    { label: 'Cost per m²', value: `${curr} ${results.costPerM2.toLocaleString()}` },
+    { label: 'Cost per Sq Ft', value: `${curr} ${results.costPerSqFt.toLocaleString()}` },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
         
-        {/* Form Inputs */}
-        <div className="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+        {/* Left Column: Input Form */}
+        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm space-y-6">
           
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
             <div className="flex items-center gap-2">
               <Calculator className="w-5 h-5 text-[#0F2D5C]" />
-              <h3 className="font-bold text-slate-900 text-lg">Project Scope & Rates</h3>
+              <h3 className="font-bold text-slate-900 text-base sm:text-lg">Project Scope & Custom Rates</h3>
             </div>
             
             <button
               onClick={handleReset}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#0F2D5C] bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset</span>
             </button>
           </div>
 
-          {/* Quality Tier Selector */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-              Building Quality Tier
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {(['basic', 'standard', 'premium'] as const).map((tier) => (
-                <button
-                  key={tier}
-                  type="button"
-                  onClick={() => handleQualityChange(tier)}
-                  className={`p-3 rounded-xl border text-center transition-all ${inputs.qualityGrade === tier ? 'border-[#0F2D5C] bg-blue-50/80 text-[#0F2D5C] font-black ring-2 ring-[#0F2D5C]/20' : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300'}`}
-                >
-                  <div className="capitalize text-xs font-bold">{tier}</div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">
-                    {tier === 'basic' ? '$20/sqft' : tier === 'standard' ? '$32/sqft' : '$50/sqft'}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Built up area and unit rate */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Currency Selection & Area */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Built-Up Area (Sq Ft)
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                Currency Mode
               </label>
-              <input
-                type="number"
-                min="100"
-                step="50"
-                value={inputs.builtUpAreaSqFt}
-                onChange={(e) => handleChange('builtUpAreaSqFt', parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-300 font-bold text-sm"
-              />
+              <select
+                value={inputs.currency}
+                onChange={(e) => handleChange('currency', e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-300 font-bold text-sm bg-white focus:border-[#0F2D5C]"
+              >
+                <option value="SAR">Saudi Riyal (SAR - ﷼)</option>
+                <option value="AED">UAE Dirham (AED - د.إ)</option>
+                <option value="QAR">Qatari Riyal (QAR - ﷼)</option>
+                <option value="KWD">Kuwaiti Dinar (KWD - د.ك)</option>
+                <option value="BHD">Bahraini Dinar (BHD - .د.ب)</option>
+                <option value="OMR">Omani Rial (OMR - ﷼)</option>
+                <option value="USD">US Dollar ($)</option>
+                <option value="EUR">Euro (€)</option>
+                <option value="INR">Indian Rupee (₹)</option>
+                <option value="GBP">British Pound (£)</option>
+              </select>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Cost Rate per Sq Ft ($)
+                Built-Up Area (m²)
               </label>
-              <input
-                type="number"
-                min="1"
-                step="any"
-                value={inputs.unitCostPerSqFt}
-                onChange={(e) => handleChange('unitCostPerSqFt', parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-300 font-bold text-sm"
-              />
+              <div className="relative">
+                <input
+                  type="number"
+                  min="1"
+                  step="any"
+                  value={inputs.builtUpAreaM2 || ''}
+                  onChange={(e) => handleChange('builtUpAreaM2', parseFloat(e.target.value) || 0)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-300 font-bold text-sm focus:border-[#0F2D5C]"
+                  placeholder="e.g. 150"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">
+                  ≈ {results.builtUpAreaSqFt} Sq Ft
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
-            <div className="font-bold text-slate-800">Standard Civil Percentage Allocation:</div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-              <span>• Cement: 16%</span>
-              <span>• Steel: 15%</span>
-              <span>• Sand: 8%</span>
-              <span>• Aggregates: 7%</span>
-              <span>• Bricks: 10%</span>
-              <span>• Finishing: 16%</span>
-              <span>• Labor: 20%</span>
-              <span>• Fittings: 8%</span>
+          {/* Section 1: Material Rates */}
+          <div className="space-y-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C] flex items-center justify-between border-b pb-1">
+              <span>Material Unit Rates ({curr})</span>
+              <span className="text-[10px] text-slate-400 font-normal">Custom rates allowed</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Cement ({curr} / bag)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.cementPricePerBag}
+                  onChange={(e) => handleChange('cementPricePerBag', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Sand ({curr} / m³)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.sandPricePerM3}
+                  onChange={(e) => handleChange('sandPricePerM3', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Aggregate ({curr} / m³)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.aggregatePricePerM3}
+                  onChange={(e) => handleChange('aggregatePricePerM3', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Brick ({curr} / piece)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.brickPricePerPiece}
+                  onChange={(e) => handleChange('brickPricePerPiece', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Steel ({curr} / kg)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.steelPricePerKg}
+                  onChange={(e) => handleChange('steelPricePerKg', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Tile ({curr} / m²)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.tilePricePerM2}
+                  onChange={(e) => handleChange('tilePricePerM2', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-slate-700 font-semibold mb-1">Paint ({curr} / liter)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.paintPricePerLiter}
+                  onChange={(e) => handleChange('paintPricePerLiter', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Labor Rates */}
+          <div className="space-y-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C] border-b pb-1">
+              Labor & Daily Wages ({curr})
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Mason Wage / day</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.masonDailyWage}
+                  onChange={(e) => handleChange('masonDailyWage', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Mason Days</label>
+                <input
+                  type="number"
+                  step="1"
+                  value={inputs.masonDaysCount || ''}
+                  onChange={(e) => handleChange('masonDaysCount', parseInt(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                  placeholder="Auto"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Helper Wage / day</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.helperDailyWage}
+                  onChange={(e) => handleChange('helperDailyWage', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Helper Days</label>
+                <input
+                  type="number"
+                  step="1"
+                  value={inputs.helperDaysCount || ''}
+                  onChange={(e) => handleChange('helperDaysCount', parseInt(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                  placeholder="Auto"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Logistics, Expenses & Contingency */}
+          <div className="space-y-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C] border-b pb-1">
+              Logistics, Expenses & Contingency
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Transportation ({curr})</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.transportation}
+                  onChange={(e) => handleChange('transportation', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Other Expenses ({curr})</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.otherExpenses}
+                  onChange={(e) => handleChange('otherExpenses', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">Contingency (%)</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={inputs.contingencyPercent}
+                  onChange={(e) => handleChange('contingencyPercent', parseFloat(e.target.value) || 0)}
+                  className="w-full p-2 rounded-lg border border-slate-300 font-bold"
+                />
+              </div>
             </div>
           </div>
 
         </div>
 
-        {/* Results */}
-        <div className="lg:col-span-6 space-y-6">
-          <div className="bg-white rounded-2xl border-2 border-[#0F2D5C] p-6 shadow-xl space-y-6">
+        {/* Right Column: Output Summary Card */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="bg-white rounded-2xl border-2 border-[#0F2D5C] p-4 sm:p-6 shadow-xl space-y-5 sm:space-y-6">
             
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h3 className="font-black text-slate-900 text-xl">Total Project Budget</h3>
-              <div className="flex items-center gap-2">
-                <button onClick={handleCopy} className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200">
-                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                </button>
-                <button onClick={() => setShowPrintModal(true)} className="p-2 rounded-xl bg-[#0F2D5C] text-[#F4B400]">
-                  <Printer className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-[#0F2D5C] to-[#163c78] rounded-2xl p-5 text-white shadow-md flex items-center justify-between">
               <div>
-                <span className="text-xs uppercase font-semibold text-slate-300">Total Estimated Budget</span>
-                <div className="text-4xl font-black text-[#F4B400] mt-1">
-                  ${results.totalEstimatedCost.toLocaleString()}
-                </div>
-                <div className="text-xs text-slate-300 mt-0.5">
-                  Scope: {inputs.builtUpAreaSqFt} Sq Ft @ ${inputs.unitCostPerSqFt}/sq ft
-                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F2D5C] bg-blue-100 px-2.5 py-0.5 rounded-full">
+                  Estimate Summary
+                </span>
+                <h3 className="font-black text-slate-900 text-xl mt-1">
+                  Cost Breakdown
+                </h3>
               </div>
-              <DollarSign className="w-10 h-10 text-[#F4B400]" />
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
+                  title="Copy results"
+                >
+                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                  <span>{copied ? 'Copied' : 'Copy'}</span>
+                </button>
+
+                <button
+                  onClick={() => setShowPrintModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] text-xs font-bold transition-colors cursor-pointer"
+                  title="Print formal report"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print</span>
+                </button>
+              </div>
             </div>
 
-            {/* Visual Progress/Distribution Stack */}
+            {/* Total Highlight Banner */}
+            <div className="bg-gradient-to-r from-[#0F2D5C] to-[#163c78] rounded-2xl p-5 text-white shadow-md space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-xs uppercase font-semibold text-slate-300">
+                    Total Project Cost
+                  </span>
+                  <div className="text-3xl sm:text-4xl font-black text-[#F4B400] mt-0.5">
+                    {curr} {results.grandTotal.toLocaleString()}
+                  </div>
+                </div>
+                <Coins className="w-10 h-10 text-[#F4B400]" />
+              </div>
+
+              {/* Unit Cost Rates Display */}
+              <div className="pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs">
+                <div className="bg-white/10 rounded-xl p-2.5">
+                  <div className="text-slate-300 font-medium">Cost per m²</div>
+                  <div className="text-base font-black text-white mt-0.5">
+                    {curr} {results.costPerM2.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-xl p-2.5">
+                  <div className="text-slate-300 font-medium">Cost per Sq Ft</div>
+                  <div className="text-base font-black text-white mt-0.5">
+                    {curr} {results.costPerSqFt.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Progress Bar */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center justify-between">
-                <span>Material & Labor Share Breakdown</span>
-                <span>100% Total</span>
+                <span>Budget Share Distribution</span>
+                <span>100%</span>
               </div>
               
-              <div className="w-full h-4 rounded-full overflow-hidden flex bg-slate-200 shadow-inner">
+              <div className="w-full h-3.5 rounded-full overflow-hidden flex bg-slate-200 shadow-inner">
                 {results.breakdown.map((item, idx) => (
                   <div
                     key={idx}
                     style={{ width: `${item.percentage}%`, backgroundColor: item.color }}
-                    title={`${item.item}: $${item.cost.toLocaleString()}`}
+                    title={`${item.item}: ${curr} ${item.cost.toLocaleString()}`}
                   />
                 ))}
               </div>
             </div>
 
-            {/* Itemized Grid */}
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              {results.breakdown.map((item, i) => (
-                <div key={i} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
-                    <span className="font-semibold text-slate-700 line-clamp-1">{item.item}</span>
-                  </div>
-                  <span className="font-bold text-slate-900">${item.cost.toLocaleString()}</span>
-                </div>
-              ))}
+            {/* Itemized Major Categories Table */}
+            <div className="space-y-2 text-xs">
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between font-bold">
+                <span className="text-slate-700">Material Cost Total</span>
+                <span className="text-[#0F2D5C]">{curr} {results.materialCost.toLocaleString()}</span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between font-bold">
+                <span className="text-slate-700">Labor Cost Total</span>
+                <span className="text-[#0F2D5C]">{curr} {results.laborCost.toLocaleString()}</span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between font-bold">
+                <span className="text-slate-700">Transportation</span>
+                <span className="text-[#0F2D5C]">{curr} {results.transportation.toLocaleString()}</span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between font-bold">
+                <span className="text-slate-700">Other Expenses</span>
+                <span className="text-[#0F2D5C]">{curr} {results.otherExpenses.toLocaleString()}</span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between font-bold text-amber-900">
+                <span>Contingency Margin ({inputs.contingencyPercent}%)</span>
+                <span>{curr} {results.contingency.toLocaleString()}</span>
+              </div>
             </div>
 
           </div>
@@ -245,20 +483,72 @@ export const ConstructionCostCalculator: React.FC = () => {
 
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
-        <h4 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+      {/* Expandable Formula & Assumptions */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+        <button
+          onClick={() => setShowAssumptions(!showAssumptions)}
+          className="w-full p-4 sm:p-5 bg-slate-50 hover:bg-slate-100/80 transition-colors flex items-center justify-between text-left focus:outline-none cursor-pointer"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#0F2D5C] text-[#F4B400] flex items-center justify-center shrink-0">
+              <HelpCircle className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-900 text-sm sm:text-base">
+                Formula & Civil Engineering Assumptions
+              </h4>
+              <p className="text-xs text-slate-500">
+                How materials, labor days, and unit rates are derived
+              </p>
+            </div>
+          </div>
+          <div className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
+            {showAssumptions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </div>
+        </button>
+
+        {showAssumptions && (
+          <div className="p-4 sm:p-6 border-t border-slate-200 bg-white space-y-4 text-xs text-slate-600 leading-relaxed">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <div className="font-bold text-[#0F2D5C] uppercase">Material Estimations per m²</div>
+                <p>• Cement: ~4.3 bags per m² ({results.materialBreakdown.cementBags} bags total)</p>
+                <p>• Sand: ~0.55 m³ per m² ({results.materialBreakdown.sandM3} m³ total)</p>
+                <p>• Aggregates: ~0.41 m³ per m² ({results.materialBreakdown.aggregateM3} m³ total)</p>
+                <p>• Bricks: ~194 pieces per m² ({results.materialBreakdown.brickPieces} pcs total)</p>
+                <p>• Steel: ~43 kg per m² ({results.materialBreakdown.steelKg} kg total)</p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <div className="font-bold text-[#0F2D5C] uppercase">Labor & Contingency Formulas</div>
+                <p>• Mason Days: ~0.25 days per m² ({results.laborBreakdown.masonDays} days)</p>
+                <p>• Helper Days: ~0.35 days per m² ({results.laborBreakdown.helperDays} days)</p>
+                <p>• Contingency = Subtotal × ({inputs.contingencyPercent} / 100)</p>
+                <p>• Cost per m² = Grand Total / {results.builtUpAreaM2} m²</p>
+                <p>• Cost per Sq Ft = Grand Total / {results.builtUpAreaSqFt} Sq Ft</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Step Derivation */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-3">
+        <h4 className="font-bold text-slate-900 text-sm uppercase tracking-wider flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#0F2D5C]" />
-          <span>Derivation Method</span>
+          <span>Step-by-Step Derivation Log</span>
         </h4>
-        <div className="bg-slate-50 rounded-xl p-4 font-mono text-xs text-slate-700 space-y-1">
-          {results.steps.map((s, i) => <div key={i}>{s}</div>)}
+        <div className="bg-slate-50 rounded-xl p-3.5 sm:p-4 border border-slate-200 font-mono text-xs text-slate-700 space-y-1.5 overflow-x-auto">
+          {results.steps.map((st, i) => (
+            <div key={i} className="whitespace-pre-wrap">{st}</div>
+          ))}
         </div>
       </div>
 
       {showPrintModal && (
         <PrintModal
-          title="Building Construction Cost Estimate Sheet"
-          summaryText={`Estimated total house construction budget for ${inputs.builtUpAreaSqFt} Sq Ft.`}
+          title={`Building Construction Cost Estimate Report (${curr})`}
+          summaryText={`Detailed project cost estimation for ${results.builtUpAreaM2} m² (${results.builtUpAreaSqFt} Sq Ft) built-up area.`}
           steps={results.steps}
           resultsTable={printTableData}
           onClose={() => setShowPrintModal(false)}

@@ -567,62 +567,127 @@ export function calculatePaint(inputs: PaintInputs): PaintResults {
 
 // 9. CONSTRUCTION COST CALCULATOR
 export function calculateConstructionCost(inputs: ConstructionCostInputs): ConstructionCostResults {
-  const {
-    builtUpAreaSqFt,
-    qualityGrade,
-    unitCostPerSqFt,
-    laborCostPerSqFt
-  } = inputs;
+  const currency = inputs.currency || 'SAR';
 
-  let baseRate = unitCostPerSqFt;
-  if (!baseRate || baseRate <= 0) {
-    if (qualityGrade === 'basic') baseRate = 20;
-    else if (qualityGrade === 'standard') baseRate = 32;
-    else baseRate = 50;
+  // Area conversions
+  let areaM2 = inputs.builtUpAreaM2 || 0;
+  if (areaM2 <= 0 && inputs.builtUpAreaSqFt && inputs.builtUpAreaSqFt > 0) {
+    areaM2 = inputs.builtUpAreaSqFt / 10.7639;
   }
+  if (areaM2 <= 0) areaM2 = 150; // default 150 m2
+  const areaSqFt = areaM2 * 10.7639;
 
-  const totalCost = builtUpAreaSqFt * baseRate;
+  // Material Quantity Estimates based on Civil Norms per m2
+  const cementBags = round(areaM2 * 4.3, 1);
+  const sandM3 = round(areaM2 * 0.55, 2);
+  const aggregateM3 = round(areaM2 * 0.41, 2);
+  const brickPieces = round(areaM2 * 194, 0);
+  const steelKg = round(areaM2 * 43, 1);
+  const tileM2 = round(areaM2 * 1.1, 1);
+  const paintLiters = round(areaM2 * 0.35, 1);
 
-  const cementCost = totalCost * 0.16;
-  const steelCost = totalCost * 0.15;
-  const sandCost = totalCost * 0.08;
-  const aggregateCost = totalCost * 0.07;
-  const brickCost = totalCost * 0.10;
-  const finishingCost = totalCost * 0.16;
-  const fittingsCost = totalCost * 0.08;
-  const laborCost = laborCostPerSqFt > 0 ? laborCostPerSqFt * builtUpAreaSqFt : totalCost * 0.20;
+  // Material Costs
+  const cementCost = round(cementBags * (inputs.cementPricePerBag || 0), 2);
+  const sandCost = round(sandM3 * (inputs.sandPricePerM3 || 0), 2);
+  const aggregateCost = round(aggregateM3 * (inputs.aggregatePricePerM3 || 0), 2);
+  const brickCost = round(brickPieces * (inputs.brickPricePerPiece || 0), 2);
+  const steelCost = round(steelKg * (inputs.steelPricePerKg || 0), 2);
+  const tileCost = round(tileM2 * (inputs.tilePricePerM2 || 0), 2);
+  const paintCost = round(paintLiters * (inputs.paintPricePerLiter || 0), 2);
 
+  const materialCost = round(
+    cementCost + sandCost + aggregateCost + brickCost + steelCost + tileCost + paintCost,
+    2
+  );
+
+  // Labor Costs
+  const masonDays = inputs.masonDaysCount && inputs.masonDaysCount > 0 
+    ? inputs.masonDaysCount 
+    : Math.ceil(areaM2 * 0.25);
+  const helperDays = inputs.helperDaysCount && inputs.helperDaysCount > 0 
+    ? inputs.helperDaysCount 
+    : Math.ceil(areaM2 * 0.35);
+
+  const masonCost = round(masonDays * (inputs.masonDailyWage || 0), 2);
+  const helperCost = round(helperDays * (inputs.helperDailyWage || 0), 2);
+  const laborCost = round(masonCost + helperCost, 2);
+
+  // Logistics & Other
+  const transportCost = round(inputs.transportation || 0, 2);
+  const otherCost = round(inputs.otherExpenses || 0, 2);
+
+  // Subtotal & Contingency
+  const subtotal = round(materialCost + laborCost + transportCost + otherCost, 2);
+  const contingencyPct = inputs.contingencyPercent ?? 5;
+  const contingency = round(subtotal * (contingencyPct / 100), 2);
+  const grandTotal = round(subtotal + contingency, 2);
+
+  const costPerM2 = round(grandTotal / areaM2, 2);
+  const costPerSqFt = round(grandTotal / areaSqFt, 2);
+
+  // Percentage Visualizer Breakdown
+  const totalForShare = grandTotal || 1;
   const breakdown = [
-    { item: 'Cement (16%)', cost: round(cementCost), percentage: 16, color: '#3B82F6' },
-    { item: 'Steel Reinforcement (15%)', cost: round(steelCost), percentage: 15, color: '#475569' },
-    { item: 'Sand (8%)', cost: round(sandCost), percentage: 8, color: '#D97706' },
-    { item: 'Aggregates (7%)', cost: round(aggregateCost), percentage: 7, color: '#059669' },
-    { item: 'Bricks & Masonry (10%)', cost: round(brickCost), percentage: 10, color: '#DC2626' },
-    { item: 'Finishing & Tiles (16%)', cost: round(finishingCost), percentage: 16, color: '#8B5CF6' },
-    { item: 'Doors, Windows & Fittings (8%)', cost: round(fittingsCost), percentage: 8, color: '#0284C7' },
-    { item: 'Labor & Contracting (20%)', cost: round(laborCost), percentage: 20, color: '#0F2D5C' }
+    { item: 'Materials', cost: materialCost, percentage: round((materialCost / totalForShare) * 100, 1), color: '#0F2D5C' },
+    { item: 'Labor', cost: laborCost, percentage: round((laborCost / totalForShare) * 100, 1), color: '#3B82F6' },
+    { item: 'Transportation', cost: transportCost, percentage: round((transportCost / totalForShare) * 100, 1), color: '#D97706' },
+    { item: 'Other Expenses', cost: otherCost, percentage: round((otherCost / totalForShare) * 100, 1), color: '#059669' },
+    { item: `Contingency (${contingencyPct}%)`, cost: contingency, percentage: round((contingency / totalForShare) * 100, 1), color: '#F4B400' },
   ];
 
   const steps = [
-    `1. Built-up Area = ${builtUpAreaSqFt} sq ft`,
-    `2. Quality Tier = ${qualityGrade.toUpperCase()} @ $${baseRate}/sq ft rate`,
-    `3. Estimated Total Project Cost = ${builtUpAreaSqFt} × $${baseRate} = $${round(totalCost, 2)}`,
-    `4. Cement Budget Share (16%) = $${round(cementCost, 2)}`,
-    `5. Steel Rebar Share (15%) = $${round(steelCost, 2)}`,
-    `6. Labor Share (20%) = $${round(laborCost, 2)}`
+    `1. Built-up Area = ${round(areaM2, 1)} m² (${round(areaSqFt, 0)} Sq Ft)`,
+    `2. Material Cost = Cement (${currency} ${cementCost}) + Sand (${currency} ${sandCost}) + Aggregates (${currency} ${aggregateCost}) + Bricks (${currency} ${brickCost}) + Steel (${currency} ${steelCost}) + Tiles (${currency} ${tileCost}) + Paint (${currency} ${paintCost}) = ${currency} ${materialCost}`,
+    `3. Labor Cost = Mason (${masonDays} days @ ${currency} ${inputs.masonDailyWage}) + Helper (${helperDays} days @ ${currency} ${inputs.helperDailyWage}) = ${currency} ${laborCost}`,
+    `4. Logistics & Other = Transport (${currency} ${transportCost}) + Other (${currency} ${otherCost}) = ${currency} ${transportCost + otherCost}`,
+    `5. Subtotal = ${currency} ${subtotal} | Contingency (${contingencyPct}%) = ${currency} ${contingency}`,
+    `6. Grand Total Project Cost = ${currency} ${grandTotal}`,
+    `7. Unit Cost Rates = ${currency} ${costPerM2} / m² | ${currency} ${costPerSqFt} / Sq Ft`
   ];
 
   return {
-    totalEstimatedCost: round(totalCost, 2),
-    cementCost: round(cementCost, 2),
-    sandCost: round(sandCost, 2),
-    aggregateCost: round(aggregateCost, 2),
-    steelCost: round(steelCost, 2),
-    brickCost: round(brickCost, 2),
-    finishingCost: round(finishingCost, 2),
-    fittingsCost: round(fittingsCost, 2),
-    laborCost: round(laborCost, 2),
-    contractorMarginCost: round(totalCost * 0.10, 2),
+    currency,
+    builtUpAreaM2: round(areaM2, 1),
+    builtUpAreaSqFt: round(areaSqFt, 0),
+    materialCost,
+    laborCost,
+    transportation: transportCost,
+    otherExpenses: otherCost,
+    contingency,
+    grandTotal,
+    costPerM2,
+    costPerSqFt,
+    materialBreakdown: {
+      cementCost,
+      cementBags,
+      sandCost,
+      sandM3,
+      aggregateCost,
+      aggregateM3,
+      brickCost,
+      brickPieces,
+      steelCost,
+      steelKg,
+      tileCost,
+      tileM2,
+      paintCost,
+      paintLiters,
+    },
+    laborBreakdown: {
+      masonCost,
+      masonDays,
+      helperCost,
+      helperDays,
+    },
+    totalEstimatedCost: grandTotal,
+    cementCost,
+    sandCost,
+    aggregateCost,
+    steelCost,
+    brickCost,
+    finishingCost: tileCost + paintCost,
+    fittingsCost: otherCost,
+    contractorMarginCost: contingency,
     breakdown,
     steps
   };

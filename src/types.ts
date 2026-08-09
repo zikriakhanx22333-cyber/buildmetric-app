@@ -260,18 +260,64 @@ export interface PaintResults {
 }
 
 export interface ConstructionCostInputs {
-  builtUpAreaSqFt: number;
-  qualityGrade: 'basic' | 'standard' | 'premium';
-  unitCostPerSqFt: number;
+  currency: string;
+  builtUpAreaM2: number;
+  builtUpAreaSqFt?: number;
+  qualityGrade?: 'basic' | 'standard' | 'premium';
+  unitCostPerSqFt?: number;
   cementPricePerBag: number;
-  sandPricePerCft: number;
-  aggregatePricePerCft: number;
-  steelPricePerKg: number;
+  sandPricePerM3: number;
+  aggregatePricePerM3: number;
   brickPricePerPiece: number;
-  laborCostPerSqFt: number;
+  steelPricePerKg: number;
+  tilePricePerM2: number;
+  paintPricePerLiter: number;
+  masonDailyWage: number;
+  masonDaysCount?: number;
+  helperDailyWage: number;
+  helperDaysCount?: number;
+  transportation: number;
+  otherExpenses: number;
+  contingencyPercent: number;
+  sandPricePerCft?: number;
+  aggregatePricePerCft?: number;
+  laborCostPerSqFt?: number;
 }
 
 export interface ConstructionCostResults {
+  currency: string;
+  builtUpAreaM2: number;
+  builtUpAreaSqFt: number;
+  materialCost: number;
+  laborCost: number;
+  transportation: number;
+  otherExpenses: number;
+  contingency: number;
+  grandTotal: number;
+  costPerM2: number;
+  costPerSqFt: number;
+  materialBreakdown: {
+    cementCost: number;
+    cementBags: number;
+    sandCost: number;
+    sandM3: number;
+    aggregateCost: number;
+    aggregateM3: number;
+    brickCost: number;
+    brickPieces: number;
+    steelCost: number;
+    steelKg: number;
+    tileCost: number;
+    tileM2: number;
+    paintCost: number;
+    paintLiters: number;
+  };
+  laborBreakdown: {
+    masonCost: number;
+    masonDays: number;
+    helperCost: number;
+    helperDays: number;
+  };
   totalEstimatedCost: number;
   cementCost: number;
   sandCost: number;
@@ -280,7 +326,6 @@ export interface ConstructionCostResults {
   brickCost: number;
   finishingCost: number;
   fittingsCost: number;
-  laborCost: number;
   contractorMarginCost: number;
   breakdown: { item: string; cost: number; percentage: number; color: string }[];
   steps: string[];
