@@ -4,9 +4,7 @@ import { CALCULATORS, CATEGORIES } from '../data/calculators';
 import { CalculatorCard } from './CalculatorCard';
 import { SEO } from './SEO';
 import { getSlugFromId } from '../utils/slugs';
-import { Search, Sparkles, Filter, Calculator } from 'lucide-react';
-import { CategoryId } from '../types';
-
+import { Search, Sparkles, Calculator, CheckCircle2, BookOpen } from 'lucide-react';
 import { CalculatorId } from '../types';
 
 export const CalculatorsDirectoryPage: React.FC = () => {
@@ -28,11 +26,34 @@ export const CalculatorsDirectoryPage: React.FC = () => {
     return matchesCategory && matchesSearch;
   });
 
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://buildmetric.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Calculators Directory",
+        "item": "https://buildmetric.com/calculators"
+      }
+    ]
+  };
+
   return (
     <div className="py-10 bg-slate-50 min-h-screen">
       <SEO 
-        title="All Construction Calculators & Civil Engineering Estimation Tools | BuildMetric"
-        description="Comprehensive directory of free online construction calculators for concrete, steel rebar, bricks, tiles, paint, excavation, structural elements, and BOQ estimation."
+        title="Construction Calculators - Free Online Tools | BuildMetric"
+        description="Use free construction calculators for concrete, steel, bricks, cement, sand, tiles, paint and construction cost estimation."
+        canonicalUrl="https://buildmetric.com/calculators"
+        ogTitle="Construction Calculators - Free Online Tools | BuildMetric"
+        ogDescription="Use free construction calculators for concrete, steel, bricks, cement, sand, tiles, paint and construction cost estimation."
+        jsonLd={breadcrumbsJsonLd}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -44,24 +65,24 @@ export const CalculatorsDirectoryPage: React.FC = () => {
           <div className="relative z-10 max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold text-[#F4B400]">
               <Sparkles className="w-3.5 h-3.5 text-[#F4B400]" />
-              <span>{CALCULATORS.length} Fully Functional Construction Tools</span>
+              <span>{CALCULATORS.length} Active Civil Engineering Tools</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-              All Construction Calculators
+              Construction Calculators &amp; Estimation Tools
             </h1>
 
             <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
-              Explore our complete suite of civil engineering and architectural calculators. Accurate formulas for concrete mixes, steel rebar schedules, masonry, paint, flooring, excavation, and BOQ cost estimation.
+              Use free construction calculators for concrete volume, steel rebar weights, brick walls, mortar, tiles, paint coverage, and BOQ cost estimates. Formulated according to IS 456, ACI 318, and standard civil engineering practice.
             </p>
 
-            {/* Direct Search Bar */}
+            {/* Search Input */}
             <div className="pt-2 max-w-xl">
               <div className="relative flex items-center bg-white rounded-2xl p-2 shadow-lg">
                 <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
                 <input
                   type="text"
-                  placeholder="Search calculators by material or task (e.g. concrete, rebar, brick, paint)..."
+                  placeholder="Search calculators by material or trade (e.g., concrete, rebar, brick, paint)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-3 py-2 text-slate-800 text-sm focus:outline-none font-medium placeholder-slate-400"
@@ -79,7 +100,35 @@ export const CalculatorsDirectoryPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Filter Pills */}
+        {/* Useful Introductory SEO Content */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-sm">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#0F2D5C] uppercase tracking-wider">
+            <BookOpen className="w-4 h-4 text-[#F4B400]" />
+            <span>Civil Engineering Estimation Guide</span>
+          </div>
+          <h2 className="text-xl font-bold text-slate-900">
+            How BuildMetric Construction Calculators Help Your Project
+          </h2>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Accurate material estimation prevents budget overruns and material shortages on site. BuildMetric's suite of construction calculators helps quantity surveyors, contractors, site supervisors, and home builders estimate exact quantities of cement, sand, coarse aggregate, steel reinforcement bars, masonry bricks, wall plaster, flooring tiles, and wall paint.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs font-semibold text-slate-700">
+            <div className="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Standard Dry Factors (1.54 Concrete / 1.33 Mortar)</span>
+            </div>
+            <div className="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Standard Steel Density (7,850 kg/m³ &amp; D²/162.2)</span>
+            </div>
+            <div className="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Deductions for Openings &amp; Wastage Margins</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Category Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           <button
             onClick={() => setSelectedCategory('all')}
@@ -114,7 +163,7 @@ export const CalculatorsDirectoryPage: React.FC = () => {
             <Calculator className="w-12 h-12 text-slate-300 mx-auto" />
             <h3 className="text-lg font-bold text-slate-800">No calculators matched your search</h3>
             <p className="text-sm text-slate-500 max-w-md mx-auto">
-              Try adjusting your search terms or category filter to find the calculation tool you need.
+              Try adjusting your search query or switching category filters to view available tools.
             </p>
             <button
               onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }}

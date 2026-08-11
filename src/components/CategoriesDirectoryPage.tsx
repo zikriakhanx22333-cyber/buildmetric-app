@@ -8,11 +8,32 @@ import { Sparkles } from 'lucide-react';
 export const CategoriesDirectoryPage: React.FC = () => {
   const navigate = useNavigate();
 
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://buildmetric.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Categories",
+        "item": "https://buildmetric.com/categories"
+      }
+    ]
+  };
+
   return (
     <div className="py-10 bg-slate-50 min-h-screen">
       <SEO 
-        title="Construction Engineering Categories & Disciplines | BuildMetric"
+        title="Construction Categories & Engineering Disciplines | BuildMetric"
         description="Browse calculators grouped by construction categories: Concrete & Cement, Steel & Rebar, Masonry, Flooring & Finishing, Earthwork, Structural, and BOQ Cost Estimation."
+        canonicalUrl="https://buildmetric.com/categories"
+        jsonLd={breadcrumbsJsonLd}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

@@ -4,7 +4,7 @@ import { CATEGORIES, CALCULATORS } from '../data/calculators';
 import { CalculatorCard } from './CalculatorCard';
 import { SEO } from './SEO';
 import { getSlugFromId } from '../utils/slugs';
-import { ArrowLeft, Sparkles, Folder } from 'lucide-react';
+import { ArrowLeft, Folder } from 'lucide-react';
 
 export const CategoryDetailPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -12,12 +12,40 @@ export const CategoryDetailPage: React.FC = () => {
 
   const category = CATEGORIES.find(c => c.id === categoryId) || CATEGORIES[0];
   const categoryCalculators = CALCULATORS.filter(c => c.categoryId === category.id);
+  const canonicalUrl = `https://buildmetric.com/categories/${category.id}`;
+
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://buildmetric.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Categories",
+        "item": "https://buildmetric.com/categories"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": category.name,
+        "item": canonicalUrl
+      }
+    ]
+  };
 
   return (
     <div className="py-10 bg-slate-50 min-h-screen">
       <SEO 
         title={`${category.name} Calculators & Estimation Tools | BuildMetric`}
         description={category.description}
+        canonicalUrl={canonicalUrl}
+        jsonLd={breadcrumbsJsonLd}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

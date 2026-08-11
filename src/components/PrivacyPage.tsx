@@ -1,6 +1,6 @@
 import React from 'react';
 import { SEO } from './SEO';
-import { ShieldCheck, Lock, EyeOff } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export const PrivacyPage: React.FC = () => {
   return (
@@ -8,6 +8,7 @@ export const PrivacyPage: React.FC = () => {
       <SEO 
         title="Privacy Policy | BuildMetric Construction Tools"
         description="BuildMetric respects user privacy. All civil engineering calculations occur 100% client-side in your browser."
+        canonicalUrl="https://buildmetric.com/privacy"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-6">
@@ -31,14 +32,14 @@ export const PrivacyPage: React.FC = () => {
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-lg font-bold text-slate-900">2. Data Collection & Analytics</h2>
+              <h2 className="text-lg font-bold text-slate-900">2. Data Collection &amp; Analytics</h2>
               <p>
                 We do not require user account registration, login credentials, or personal contact details to access any calculator on BuildMetric. Measurement inputs entered into calculation forms are never saved to remote servers or shared with third parties.
               </p>
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-lg font-bold text-slate-900">3. Cookies & Local Storage</h2>
+              <h2 className="text-lg font-bold text-slate-900">3. Cookies &amp; Local Storage</h2>
               <p>
                 BuildMetric may utilize lightweight local browser storage purely to remember user preferences (such as selected unit preferences e.g. Meters vs Feet). No tracking or cross-site profiling cookies are deployed.
               </p>

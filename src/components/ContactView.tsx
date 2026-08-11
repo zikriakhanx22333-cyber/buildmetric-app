@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
+import { SEO } from './SEO';
 
 export const ContactView: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -18,6 +19,11 @@ export const ContactView: React.FC = () => {
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
+      <SEO 
+        title="Contact BuildMetric - Construction Calculator Support & Requests"
+        description="Contact the BuildMetric civil engineering team for custom calculator requests, formula clarifications, or site estimation partnerships."
+        canonicalUrl="https://buildmetric.com/contact"
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -74,7 +80,7 @@ export const ContactView: React.FC = () => {
                 </p>
                 <button
                   onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' }); }}
-                  className="mt-2 text-xs font-bold text-[#0F2D5C] bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm"
+                  className="mt-2 text-xs font-bold text-[#0F2D5C] bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm cursor-pointer"
                 >
                   Send Another Message
                 </button>
@@ -133,7 +139,7 @@ export const ContactView: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 rounded-xl bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>Send Message</span>

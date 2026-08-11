@@ -1,9 +1,15 @@
 import React from 'react';
-import { ShieldCheck, Users, Calculator, Award, Building2 } from 'lucide-react';
+import { ShieldCheck, Calculator } from 'lucide-react';
+import { SEO } from './SEO';
 
 export const AboutView: React.FC = () => {
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
+      <SEO 
+        title="About BuildMetric - Free Construction Calculators Platform"
+        description="Learn about BuildMetric's mission to provide reliable, code-compliant civil engineering estimators for concrete, steel, masonry, and cost calculation."
+        canonicalUrl="https://buildmetric.com/about"
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-sm space-y-6">
@@ -12,7 +18,7 @@ export const AboutView: React.FC = () => {
           </span>
 
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Smart Construction Calculators & Estimation Platform
+            Smart Construction Calculators &amp; Estimation Platform
           </h1>
 
           <p className="text-slate-600 text-base leading-relaxed">

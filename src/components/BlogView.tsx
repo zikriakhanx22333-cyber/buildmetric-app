@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { BlogPost } from '../types';
-import { BookOpen, Clock, User, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
+import { SEO } from './SEO';
+import { Clock, User, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export const BlogView: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
 
   if (selectedPost) {
+    const postCanonical = `https://buildmetric.com/blog#${selectedPost.slug}`;
     return (
       <div className="py-12 bg-slate-50 min-h-screen">
+        <SEO 
+          title={`${selectedPost.title} | BuildMetric Blog`}
+          description={selectedPost.summary}
+          canonicalUrl={postCanonical}
+          ogType="article"
+        />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <button
             onClick={() => setSelectedPost(null)}
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm hover:bg-slate-100"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm hover:bg-slate-100 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to All Articles</span>
@@ -53,6 +61,11 @@ export const BlogView: React.FC = () => {
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
+      <SEO 
+        title="Civil Engineering & Construction Blog | BuildMetric"
+        description="Practical estimation guides, concrete mix formulas, rebar weight calculations, and construction site management tips."
+        canonicalUrl="https://buildmetric.com/blog"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="text-center max-w-2xl mx-auto space-y-3">

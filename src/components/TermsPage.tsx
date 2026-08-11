@@ -1,6 +1,6 @@
 import React from 'react';
 import { SEO } from './SEO';
-import { FileText, AlertTriangle } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 export const TermsPage: React.FC = () => {
   return (
@@ -8,6 +8,7 @@ export const TermsPage: React.FC = () => {
       <SEO 
         title="Terms of Service | BuildMetric Construction Tools"
         description="Terms of Service and engineering usage guidelines for BuildMetric calculators."
+        canonicalUrl="https://buildmetric.com/terms"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-6">
