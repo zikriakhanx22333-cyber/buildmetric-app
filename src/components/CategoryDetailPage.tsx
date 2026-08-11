@@ -12,7 +12,7 @@ export const CategoryDetailPage: React.FC = () => {
 
   const category = CATEGORIES.find(c => c.id === categoryId) || CATEGORIES[0];
   const categoryCalculators = CALCULATORS.filter(c => c.categoryId === category.id);
-  const canonicalUrl = `https://buildmetric.com/categories/${category.id}`;
+  const canonicalUrl = `https://buildmetric-app.vercel.app/categories/${category.id}`;
 
   const breadcrumbsJsonLd = {
     "@context": "https://schema.org",
@@ -22,13 +22,13 @@ export const CategoryDetailPage: React.FC = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://buildmetric.com/"
+        "item": "https://buildmetric-app.vercel.app/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Categories",
-        "item": "https://buildmetric.com/categories"
+        "item": "https://buildmetric-app.vercel.app/categories"
       },
       {
         "@type": "ListItem",

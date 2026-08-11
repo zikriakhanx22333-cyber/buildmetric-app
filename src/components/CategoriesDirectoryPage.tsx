@@ -16,13 +16,13 @@ export const CategoriesDirectoryPage: React.FC = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://buildmetric.com/"
+        "item": "https://buildmetric-app.vercel.app/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Categories",
-        "item": "https://buildmetric.com/categories"
+        "item": "https://buildmetric-app.vercel.app/categories"
       }
     ]
   };
@@ -32,7 +32,7 @@ export const CategoriesDirectoryPage: React.FC = () => {
       <SEO 
         title="Construction Categories & Engineering Disciplines | BuildMetric"
         description="Browse calculators grouped by construction categories: Concrete & Cement, Steel & Rebar, Masonry, Flooring & Finishing, Earthwork, Structural, and BOQ Cost Estimation."
-        canonicalUrl="https://buildmetric.com/categories"
+        canonicalUrl="https://buildmetric-app.vercel.app/categories"
         jsonLd={breadcrumbsJsonLd}
       />
 

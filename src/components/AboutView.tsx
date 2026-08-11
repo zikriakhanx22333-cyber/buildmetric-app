@@ -8,7 +8,7 @@ export const AboutView: React.FC = () => {
       <SEO 
         title="About BuildMetric - Free Construction Calculators Platform"
         description="Learn about BuildMetric's mission to provide reliable, code-compliant civil engineering estimators for concrete, steel, masonry, and cost calculation."
-        canonicalUrl="https://buildmetric.com/about"
+        canonicalUrl="https://buildmetric-app.vercel.app/about"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         

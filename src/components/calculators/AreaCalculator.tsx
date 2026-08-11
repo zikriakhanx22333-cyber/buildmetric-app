@@ -39,7 +39,7 @@ Calculated Area (Sq Ft): ${results.squareFeet} sq ft
 Calculated Area (Sq Meters): ${results.squareMeters} sq m
 Calculated Area (Sq Yards): ${results.squareYards} sq yd
 ----------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

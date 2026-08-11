@@ -33,7 +33,7 @@ BuildMetric - Construction Volume Unit Conversion:
 Input: ${inputs.value} ${inputs.fromUnit}
 Converted Output: ${results.convertedValue} ${results.unit}
 ------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

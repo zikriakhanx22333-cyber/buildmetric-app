@@ -8,7 +8,7 @@ export const BlogView: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
 
   if (selectedPost) {
-    const postCanonical = `https://buildmetric.com/blog#${selectedPost.slug}`;
+    const postCanonical = `https://buildmetric-app.vercel.app/blog#${selectedPost.slug}`;
     return (
       <div className="py-12 bg-slate-50 min-h-screen">
         <SEO 
@@ -64,7 +64,7 @@ export const BlogView: React.FC = () => {
       <SEO 
         title="Civil Engineering & Construction Blog | BuildMetric"
         description="Practical estimation guides, concrete mix formulas, rebar weight calculations, and construction site management tips."
-        canonicalUrl="https://buildmetric.com/blog"
+        canonicalUrl="https://buildmetric-app.vercel.app/blog"
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         

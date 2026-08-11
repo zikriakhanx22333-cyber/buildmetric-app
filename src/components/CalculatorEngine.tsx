@@ -51,7 +51,7 @@ export const CalculatorEngine: React.FC<CalculatorEngineProps> = ({
   const meta = CALCULATORS.find(c => c.id === calculatorId) || CALCULATORS[0];
   const guide = CALCULATOR_GUIDES[calculatorId] || CALCULATOR_GUIDES['concrete-calculator'];
   const currentSlug = getSlugFromId(meta.id);
-  const canonicalUrl = `https://buildmetric.com/calculators/${currentSlug}`;
+  const canonicalUrl = `https://buildmetric-app.vercel.app/calculators/${currentSlug}`;
 
   const renderActiveCalculatorComponent = () => {
     switch (calculatorId) {
@@ -130,13 +130,13 @@ export const CalculatorEngine: React.FC<CalculatorEngineProps> = ({
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://buildmetric.com/"
+        "item": "https://buildmetric-app.vercel.app/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Calculators",
-        "item": "https://buildmetric.com/calculators"
+        "item": "https://buildmetric-app.vercel.app/calculators"
       },
       {
         "@type": "ListItem",

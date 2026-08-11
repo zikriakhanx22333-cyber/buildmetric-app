@@ -43,7 +43,7 @@ Sand Quantity: ${results.sandCft} CFT (${results.sandWeightKg} kg)
 Coarse Aggregate: ${results.aggregateCft} CFT (${results.aggregateWeightKg} kg)
 Water Required: ${results.waterLiters} Liters
 ---------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

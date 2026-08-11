@@ -43,7 +43,7 @@ Total Cut Length: ${results.totalBarLengthMeters} meters
 Unit Weight (D²/162.2): ${results.weightPerMeterKg} kg/m
 Total Reinforcement Weight: ${results.totalWeightKg} kg (${results.totalWeightTons} Metric Tons)
 ----------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

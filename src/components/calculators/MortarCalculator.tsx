@@ -56,7 +56,7 @@ Dry Mortar Volume (1.33 factor): ${results.dryMortarVolumeCft} CFT
 Cement Required: ${results.cementBags} Bags (50kg)
 Sand Required: ${results.sandCft} CFT
 --------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

@@ -8,7 +8,7 @@ export const PrivacyPage: React.FC = () => {
       <SEO 
         title="Privacy Policy | BuildMetric Construction Tools"
         description="BuildMetric respects user privacy. All civil engineering calculations occur 100% client-side in your browser."
-        canonicalUrl="https://buildmetric.com/privacy"
+        canonicalUrl="https://buildmetric-app.vercel.app/privacy"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-6">

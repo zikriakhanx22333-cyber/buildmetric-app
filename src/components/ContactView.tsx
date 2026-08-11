@@ -22,7 +22,7 @@ export const ContactView: React.FC = () => {
       <SEO 
         title="Contact BuildMetric - Construction Calculator Support & Requests"
         description="Contact the BuildMetric civil engineering team for custom calculator requests, formula clarifications, or site estimation partnerships."
-        canonicalUrl="https://buildmetric.com/contact"
+        canonicalUrl="https://buildmetric-app.vercel.app/contact"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
@@ -48,7 +48,7 @@ export const ContactView: React.FC = () => {
                 <Mail className="w-5 h-5 text-[#0F2D5C] shrink-0" />
                 <div>
                   <div className="font-bold text-slate-800">Email Engineering Team</div>
-                  <div>support@buildmetric.com</div>
+                  <div>support@buildmetric-app.vercel.app</div>
                 </div>
               </div>
 

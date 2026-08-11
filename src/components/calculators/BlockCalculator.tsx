@@ -54,7 +54,7 @@ Wastage Allowance (${inputs.wastagePercent}%): +${results.wastageBlocks} pcs
 Total Concrete Blocks Required: ${results.totalBlocksRequired} pcs
 Estimated Mortar Volume: ${results.approxMortarVolumeCft} CFT
 ------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

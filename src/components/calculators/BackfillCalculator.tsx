@@ -40,7 +40,7 @@ Void Space Volume: ${results.rawVolumeCft} CFT (${results.rawVolumeCum} m³)
 Compaction & Shrinkage Buffer: ${inputs.compactionPercent}%
 Required Loose Backfill Material: ${results.requiredBackfillCft} CFT (${results.requiredBackfillCum} m³)
 ---------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

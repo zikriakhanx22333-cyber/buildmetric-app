@@ -41,7 +41,7 @@ Cubic Feet (CFT): ${results.cubicFeet} CFT
 Cubic Meters (m³): ${results.cubicMeters} m³
 Cubic Yards (yd³): ${results.cubicYards} yd³
 ------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

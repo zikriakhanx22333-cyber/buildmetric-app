@@ -46,7 +46,7 @@ Cement Required (50kg bags): ${results.cementBags} Bags
 Sand Required: ${results.sandCft} CFT (~${results.sandTons} Metric Tons)
 Wastage Allowance: ${inputs.wastagePercent}%
 ---------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

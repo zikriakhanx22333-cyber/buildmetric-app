@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://buildmetric.com/sitemap.xml
+Sitemap: https://buildmetric-app.vercel.app/sitemap.xml

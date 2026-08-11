@@ -47,7 +47,7 @@ Wastage Allowance (${inputs.wastagePercent}%): +${results.wastagePieces} pieces
 Total Pieces Required: ${results.totalPiecesRequired} pieces
 Total Area with Wastage: ${results.totalAreaWithWastageSqFt} sq ft
 ---------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

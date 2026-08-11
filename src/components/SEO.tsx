@@ -8,6 +8,7 @@ interface SEOProps {
   ogTitle?: string;
   ogDescription?: string;
   ogUrl?: string;
+  ogImage?: string;
   jsonLd?: Record<string, any> | Array<Record<string, any>>;
 }
 
@@ -19,25 +20,33 @@ export const SEO: React.FC<SEOProps> = ({
   ogTitle,
   ogDescription,
   ogUrl,
+  ogImage = 'https://buildmetric-app.vercel.app/og-image.png',
   jsonLd,
 }) => {
   useEffect(() => {
     // 1. Update Title
     document.title = title;
 
+    // Helper for setting meta tag by attribute (property or name)
+    const setMetaTag = (attrName: 'property' | 'name', attrValue: string, content: string) => {
+      let tag = document.querySelector(`meta[${attrName}="${attrValue}"]`);
+      if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute(attrName, attrValue);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute('content', content);
+    };
+
     // 2. Update Meta Description
     if (description) {
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-      }
-      metaDesc.setAttribute('content', description);
+      setMetaTag('name', 'description', description);
     }
 
     // 3. Update Canonical URL
-    const targetCanonical = canonicalUrl || window.location.href.split('?')[0];
+    const pathname = window.location.pathname === '/' ? '' : window.location.pathname;
+    const targetCanonical = canonicalUrl || `https://buildmetric-app.vercel.app${pathname}`;
+    
     let canonicalLink = document.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');
@@ -46,24 +55,30 @@ export const SEO: React.FC<SEOProps> = ({
     }
     canonicalLink.setAttribute('href', targetCanonical);
 
-    // Helper for setting meta property
-    const setOgMeta = (property: string, content: string) => {
-      let tag = document.querySelector(`meta[property="${property}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('property', property);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-
     // 4. Open Graph Tags
-    setOgMeta('og:title', ogTitle || title);
-    setOgMeta('og:description', ogDescription || description || '');
-    setOgMeta('og:type', ogType);
-    setOgMeta('og:url', ogUrl || targetCanonical);
+    const finalOgTitle = ogTitle || title;
+    const finalOgDesc = ogDescription || description || '';
+    const finalOgUrl = ogUrl || targetCanonical;
 
-    // 5. JSON-LD Structured Data
+    setMetaTag('property', 'og:title', finalOgTitle);
+    setMetaTag('property', 'og:description', finalOgDesc);
+    setMetaTag('property', 'og:type', ogType);
+    setMetaTag('property', 'og:url', finalOgUrl);
+    setMetaTag('property', 'og:site_name', 'BuildMetric');
+    if (ogImage) {
+      setMetaTag('property', 'og:image', ogImage);
+    }
+
+    // 5. Twitter Card Tags
+    setMetaTag('name', 'twitter:card', 'summary_large_image');
+    setMetaTag('name', 'twitter:title', finalOgTitle);
+    setMetaTag('name', 'twitter:description', finalOgDesc);
+    setMetaTag('name', 'twitter:url', finalOgUrl);
+    if (ogImage) {
+      setMetaTag('name', 'twitter:image', ogImage);
+    }
+
+    // 6. JSON-LD Structured Data
     if (jsonLd) {
       let scriptTag = document.querySelector('script[type="application/ld+json"]#dynamic-seo-jsonld');
       if (!scriptTag) {
@@ -76,13 +91,12 @@ export const SEO: React.FC<SEOProps> = ({
     }
 
     return () => {
-      // Cleanup dynamically injected script if needed
       const scriptTag = document.querySelector('script[type="application/ld+json"]#dynamic-seo-jsonld');
       if (scriptTag) {
         scriptTag.remove();
       }
     };
-  }, [title, description, canonicalUrl, ogType, ogTitle, ogDescription, ogUrl, jsonLd]);
+  }, [title, description, canonicalUrl, ogType, ogTitle, ogDescription, ogUrl, ogImage, jsonLd]);
 
   return null;
 };

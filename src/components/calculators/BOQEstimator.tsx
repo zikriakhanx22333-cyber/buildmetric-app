@@ -60,7 +60,7 @@ export const BOQEstimator: React.FC = () => {
     items.forEach((item) => {
       text += `${item.itemNo} | ${item.description} | ${item.quantity} ${item.unit} @ $${item.rate} = $${item.amount.toLocaleString()}\n`;
     });
-    text += `-------------------------------------------------\nSubtotal: $${subtotal.toLocaleString()}\nContingency/Tax (${taxPercent}%): $${taxAmount.toLocaleString()}\nGRAND TOTAL: $${grandTotal.toLocaleString()}\n-------------------------------------------------\nGenerated via BuildMetric (https://buildmetric.app)`;
+    text += `-------------------------------------------------\nSubtotal: $${subtotal.toLocaleString()}\nContingency/Tax (${taxPercent}%): $${taxAmount.toLocaleString()}\nGRAND TOTAL: $${grandTotal.toLocaleString()}\n-------------------------------------------------\nGenerated via BuildMetric (https://buildmetric-app.vercel.app)`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);

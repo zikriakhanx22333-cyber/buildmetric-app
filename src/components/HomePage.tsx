@@ -34,11 +34,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "BuildMetric",
-      "url": "https://buildmetric.com/",
+      "url": "https://buildmetric-app.vercel.app/",
       "description": "Free construction calculators for concrete, steel, bricks, cement, sand, aggregate, tiles, paint and construction cost estimation.",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://buildmetric.com/calculators?q={search_term_string}",
+        "target": "https://buildmetric-app.vercel.app/calculators?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     },
@@ -46,8 +46,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "BuildMetric",
-      "url": "https://buildmetric.com/",
-      "logo": "https://buildmetric.com/logo.png",
+      "url": "https://buildmetric-app.vercel.app/",
+      "logo": "https://buildmetric-app.vercel.app/logo.png",
       "sameAs": []
     }
   ];
@@ -57,7 +57,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
       <SEO 
         title="BuildMetric - Free Construction Calculators & Estimation Tools"
         description="Free construction calculators for concrete, steel, bricks, cement, sand, aggregate, tiles, paint and construction cost estimation."
-        canonicalUrl="https://buildmetric.com/"
+        canonicalUrl="https://buildmetric-app.vercel.app/"
         ogTitle="BuildMetric - Free Construction Calculators & Estimation Tools"
         ogDescription="Free construction calculators for concrete, steel, bricks, cement, sand, aggregate, tiles, paint and construction cost estimation."
         jsonLd={homeJsonLd}

@@ -40,7 +40,7 @@ Number of Pits: ${inputs.numberOfPits}
 Single Pit Volume: ${results.singlePitVolumeCft} CFT
 Total Excavation Volume: ${results.totalVolumeCft} CFT (${results.totalVolumeCum} m³)
 -------------------------------------------------
-Calculated via BuildMetric (https://buildmetric.app)
+Calculated via BuildMetric (https://buildmetric-app.vercel.app)
 `;
     navigator.clipboard.writeText(text.trim());
     setCopied(true);

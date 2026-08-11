@@ -34,13 +34,13 @@ export const CalculatorsDirectoryPage: React.FC = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://buildmetric.com/"
+        "item": "https://buildmetric-app.vercel.app/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Calculators Directory",
-        "item": "https://buildmetric.com/calculators"
+        "item": "https://buildmetric-app.vercel.app/calculators"
       }
     ]
   };
@@ -50,7 +50,7 @@ export const CalculatorsDirectoryPage: React.FC = () => {
       <SEO 
         title="Construction Calculators - Free Online Tools | BuildMetric"
         description="Use free construction calculators for concrete, steel, bricks, cement, sand, tiles, paint and construction cost estimation."
-        canonicalUrl="https://buildmetric.com/calculators"
+        canonicalUrl="https://buildmetric-app.vercel.app/calculators"
         ogTitle="Construction Calculators - Free Online Tools | BuildMetric"
         ogDescription="Use free construction calculators for concrete, steel, bricks, cement, sand, tiles, paint and construction cost estimation."
         jsonLd={breadcrumbsJsonLd}

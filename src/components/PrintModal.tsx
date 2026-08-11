@@ -96,7 +96,7 @@ export const PrintModal: React.FC<PrintModalProps> = ({
           {/* Print Footer Disclaimer */}
           <div className="pt-4 border-t border-slate-200 text-[10px] text-slate-400 flex items-center justify-between">
             <span>Generated via BuildMetric Smart Construction Platform</span>
-            <span>www.buildmetric.com</span>
+            <span>https://buildmetric-app.vercel.app</span>
           </div>
 
         </div>
