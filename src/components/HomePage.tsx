@@ -55,11 +55,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
   return (
     <div className="space-y-12">
       <SEO 
-        title="BuildMetric - Free Construction Calculators & Estimation Tools"
-        description="Free construction calculators for concrete, steel, bricks, cement, sand, aggregate, tiles, paint and construction cost estimation."
+        title="BuildMetric – Free Construction Calculators & Estimation Tools"
+        description="BuildMetric provides free construction calculators for concrete, steel, bricks, construction costs and other building estimation needs."
         canonicalUrl="https://buildmetric-app.vercel.app/"
-        ogTitle="BuildMetric - Free Construction Calculators & Estimation Tools"
-        ogDescription="Free construction calculators for concrete, steel, bricks, cement, sand, aggregate, tiles, paint and construction cost estimation."
+        ogTitle="BuildMetric – Free Construction Calculators & Estimation Tools"
+        ogDescription="BuildMetric provides free construction calculators for concrete, steel, bricks, construction costs and other building estimation needs."
         jsonLd={homeJsonLd}
       />
 

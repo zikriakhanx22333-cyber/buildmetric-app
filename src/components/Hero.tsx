@@ -44,8 +44,8 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-            Build Smarter. <br className="hidden sm:inline" />
-            <span className="text-[#F4B400]">Calculate Better.</span>
+            Free Construction Calculators <br className="hidden sm:inline" />
+            <span className="text-[#F4B400]">&amp; Building Estimation Tools</span>
           </h1>
 
           {/* Subtitle */}

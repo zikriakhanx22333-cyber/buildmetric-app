@@ -160,7 +160,26 @@ export const CalculatorEngine: React.FC<CalculatorEngineProps> = ({
     }))
   } : null;
 
-  const jsonLdData = faqSchema ? [breadcrumbSchema, faqSchema] : [breadcrumbSchema];
+  const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": meta.title,
+    "url": canonicalUrl,
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "description": meta.seoMetaDescription || meta.fullDescription,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
+  const jsonLdData: any[] = [breadcrumbSchema, webAppSchema];
+  if (faqSchema) {
+    jsonLdData.push(faqSchema);
+  }
 
   // Helper for internal workflow links navigation
   const navigateToSlug = (slug: string) => {

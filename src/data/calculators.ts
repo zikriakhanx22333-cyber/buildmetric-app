@@ -96,8 +96,8 @@ export const CALCULATORS: CalculatorMeta[] = [
     featured: true,
     tags: ['Concrete', 'Cement Bags', 'Sand', 'Aggregate', 'Mix Ratio', 'M20', 'M25', 'Civil Engineering'],
     formulaSummary: 'Dry Volume = Wet Volume × 1.54 | Cement Bags = Dry Volume × (Cement Ratio / Total Ratio) / 1.226 Cft',
-    seoTitle: 'Free Concrete Calculator - Calculate Cement Bags, Sand & Aggregates | BuildMetric',
-    seoMetaDescription: 'Accurate online concrete volume calculator for builders & civil engineers. Calculate cement bags, sand volume in CFT, and coarse aggregate for M5 to M25 mix ratios.',
+    seoTitle: 'Concrete Calculator – Cement, Sand & Aggregate | BuildMetric',
+    seoMetaDescription: "Calculate cement, sand and aggregate quantities for concrete projects quickly with BuildMetric's free concrete calculator.",
     faqs: [
       {
         question: 'Why do we multiply wet concrete volume by 1.54 for dry volume?',
@@ -320,8 +320,8 @@ export const CALCULATORS: CalculatorMeta[] = [
     featured: true,
     tags: ['Steel', 'Rebar', 'Reinforcement', 'Structural', 'Weight', 'Kg', 'Tons'],
     formulaSummary: 'Weight per meter (kg/m) = D² / 162.2 | Total Weight = Weight per meter × Length × Quantity',
-    seoTitle: 'Steel Rebar Weight Calculator - Calculate Steel Weight per Meter & Tons | BuildMetric',
-    seoMetaDescription: 'Calculate rebar steel bar weight using formula D²/162.2. Instant weight in kg, metric tons, and price estimation for construction projects.',
+    seoTitle: 'Steel Weight Calculator – Rebar Weight Calculator | BuildMetric',
+    seoMetaDescription: "Calculate steel and rebar weight quickly using diameter and length with BuildMetric's free steel weight calculator.",
     faqs: [
       {
         question: 'How is the D²/162.2 steel bar formula derived?',
@@ -432,8 +432,8 @@ export const CALCULATORS: CalculatorMeta[] = [
     featured: true,
     tags: ['Bricks', 'Wall', 'Mortar', 'Fly Ash', 'Masonry', 'Cement', 'Sand'],
     formulaSummary: 'Wall Volume / Single Brick Volume with Mortar = Number of Bricks | Mortar Volume = Wall Volume - (Bricks × Brick Volume without Mortar)',
-    seoTitle: 'Brick & Mortar Calculator - Calculate Bricks and Cement for Walls | BuildMetric',
-    seoMetaDescription: 'Free wall brick calculator. Estimate total bricks required, mortar cubic feet, cement bags, and sand with door/window deductions.',
+    seoTitle: 'Brick Calculator – Bricks & Mortar Estimate | BuildMetric',
+    seoMetaDescription: "Estimate the number of bricks and mortar required for your construction project with BuildMetric's free brick calculator.",
     faqs: [
       {
         question: 'What is the standard size of a construction brick?',
@@ -879,8 +879,8 @@ export const CALCULATORS: CalculatorMeta[] = [
     featured: true,
     tags: ['Construction Cost', 'Building Estimator', 'Budget', 'House Cost', 'Labor Cost', 'Material Share'],
     formulaSummary: 'Total Budget = Built-up Area × Cost per Sq Ft | Material Breakdown based on Standard Civil Engineering Percentage Shares',
-    seoTitle: 'Construction Cost Calculator - Estimate House Building Cost | BuildMetric',
-    seoMetaDescription: 'Calculate complete house construction cost by built-up square footage. Detailed breakdown of cement, steel, bricks, labor, and finishing budget.',
+    seoTitle: 'Construction Cost Calculator – Building Cost Estimate | BuildMetric',
+    seoMetaDescription: "Estimate construction costs quickly using BuildMetric's free construction cost calculator.",
     faqs: [
       {
         question: 'What is the average construction cost per sq ft for a house?',

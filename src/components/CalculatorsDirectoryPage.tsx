@@ -48,11 +48,11 @@ export const CalculatorsDirectoryPage: React.FC = () => {
   return (
     <div className="py-10 bg-slate-50 min-h-screen">
       <SEO 
-        title="Construction Calculators - Free Online Tools | BuildMetric"
-        description="Use free construction calculators for concrete, steel, bricks, cement, sand, tiles, paint and construction cost estimation."
+        title="Construction Calculators – Free Building Estimation Tools | BuildMetric"
+        description="Free construction calculators for concrete, steel weight, bricks and construction cost estimation."
         canonicalUrl="https://buildmetric-app.vercel.app/calculators"
-        ogTitle="Construction Calculators - Free Online Tools | BuildMetric"
-        ogDescription="Use free construction calculators for concrete, steel, bricks, cement, sand, tiles, paint and construction cost estimation."
+        ogTitle="Construction Calculators – Free Building Estimation Tools | BuildMetric"
+        ogDescription="Free construction calculators for concrete, steel weight, bricks and construction cost estimation."
         jsonLd={breadcrumbsJsonLd}
       />
 
