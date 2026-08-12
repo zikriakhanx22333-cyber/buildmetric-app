@@ -2,13 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Hero } from './Hero';
 import { CalculatorCard } from './CalculatorCard';
+import { CategoryCard } from './CategoryCard';
 import { WhyBuildMetric } from './WhyBuildMetric';
 import { HowItWorks } from './HowItWorks';
 import { FAQSection } from './FAQSection';
 import { SEO } from './SEO';
-import { CALCULATORS } from '../data/calculators';
+import { CALCULATORS, CATEGORIES } from '../data/calculators';
 import { getSlugFromId } from '../utils/slugs';
-import { ArrowRight, Sparkles, Box, Layers, Building2, Grid, Calculator as CalcIcon } from 'lucide-react';
+import { ArrowRight, Box, Layers, Building2, Grid, Calculator as CalcIcon } from 'lucide-react';
 
 interface HomePageProps {
   onSearchOpen: () => void;
@@ -19,6 +20,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
 
   const handleSelectCalculator = (id: string) => {
     navigate(`/calculators/${getSlugFromId(id as any)}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectCategory = (id: string) => {
+    navigate(`/categories/${id}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -35,7 +41,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
       "@type": "WebSite",
       "name": "BuildMetric",
       "url": "https://buildmetric-app.vercel.app/",
-      "description": "Free construction calculators for concrete, steel, bricks, cement, sand, aggregate, tiles, paint and construction cost estimation.",
+      "description": "Free construction calculators for concrete, steel, bricks, cement, tiles and construction cost estimation.",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://buildmetric-app.vercel.app/calculators?q={search_term_string}",
@@ -56,10 +62,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
     <div className="space-y-12">
       <SEO 
         title="BuildMetric – Free Construction Calculators & Estimation Tools"
-        description="BuildMetric provides free construction calculators for concrete, steel, bricks, construction costs and other building estimation needs."
+        description="Free construction calculators for concrete, steel, bricks, cement, tiles and construction cost estimation."
         canonicalUrl="https://buildmetric-app.vercel.app/"
         ogTitle="BuildMetric – Free Construction Calculators & Estimation Tools"
-        ogDescription="BuildMetric provides free construction calculators for concrete, steel, bricks, construction costs and other building estimation needs."
+        ogDescription="Free construction calculators for concrete, steel, bricks, cement, tiles and construction cost estimation."
         jsonLd={homeJsonLd}
       />
 
@@ -73,7 +79,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
         onSearchOpen={onSearchOpen}
       />
 
-      {/* 1. H2: Popular Construction Calculators */}
+      {/* 1. H2: Popular Calculators */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
@@ -81,7 +87,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
               Most Used Tools
             </span>
             <h2 className="text-3xl font-black text-slate-900 mt-2 tracking-tight">
-              Popular Construction Calculators
+              Popular Calculators
             </h2>
             <p className="text-slate-600 text-sm mt-1">
               Top rated civil engineering calculators for quick material, rebar, brick, and cost estimations.
@@ -111,7 +117,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
         </div>
       </section>
 
-      {/* 2. H2: Concrete & Cement Calculators */}
+      {/* 2. H2: Construction Calculator Categories */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C] bg-amber-100 px-3 py-1 rounded-full">
+              Structured Engineering Disciplines
+            </span>
+            <h2 className="text-3xl font-black text-slate-900 mt-2 tracking-tight">
+              Construction Calculator Categories
+            </h2>
+            <p className="text-slate-600 text-sm mt-1">
+              Explore specialized estimators grouped by civil engineering trade and structural material.
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              navigate('/categories');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#0F2D5C] hover:text-[#163c78] bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm hover:border-[#0F2D5C] transition-all shrink-0 cursor-pointer"
+          >
+            <span>View All Categories</span>
+            <ArrowRight className="w-4 h-4 text-[#F4B400]" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CATEGORIES.slice(0, 6).map((cat) => (
+            <CategoryCard
+              key={cat.id}
+              category={cat}
+              onSelect={handleSelectCategory}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* 3. H2: Concrete & Cement Calculators */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-blue-100 text-[#0F2D5C] flex items-center justify-center">
@@ -138,7 +182,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
         </div>
       </section>
 
-      {/* 3. H2: Steel & Rebar Calculators */}
+      {/* 4. H2: Steel & Rebar Calculators */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-slate-200 text-slate-800 flex items-center justify-center">
@@ -165,7 +209,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
         </div>
       </section>
 
-      {/* 4. H2: Masonry Calculators */}
+      {/* 5. H2: Masonry Calculators */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
@@ -192,7 +236,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
         </div>
       </section>
 
-      {/* 5. H2: Flooring & Finishing Calculators */}
+      {/* 6. H2: Flooring & Finishing Calculators */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
@@ -219,11 +263,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
         </div>
       </section>
 
-      {/* 6. H2: Construction Cost Estimation */}
+      {/* 7. H2: Construction Cost Estimation */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-900 flex items-center justify-center">
-            <CalcIcon className="w-5 h-5 text-cyan-900" />
+          <div className="w-10 h-10 rounded-xl bg-cyan-100 text-[#0F2D5C] flex items-center justify-center">
+            <CalcIcon className="w-5 h-5 text-[#0F2D5C]" />
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -252,9 +296,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchOpen }) => {
       {/* How It Works */}
       <HowItWorks />
 
-      {/* 7. H2: Frequently Asked Questions */}
+      {/* Frequently Asked Questions */}
       <FAQSection />
 
     </div>
   );
 };
+
