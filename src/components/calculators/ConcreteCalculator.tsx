@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ConcreteInputs, ConcreteResults } from '../../types';
 import { calculateConcrete, MIX_RATIOS } from '../../utils/calculatorLogic';
-import { RotateCcw, Copy, Printer, Check, Info, AlertTriangle, Box, Sparkles, ChevronDown, ChevronUp, HelpCircle, Layers } from 'lucide-react';
+import { RotateCcw, Copy, Printer, Check, Info, AlertTriangle, Box, Sparkles, ChevronDown, ChevronUp, HelpCircle, Layers, FolderPlus } from 'lucide-react';
 import { PrintModal } from '../PrintModal';
+import { AddToProjectModal, AddToProjectData } from '../AddToProjectModal';
 
 export const ConcreteCalculator: React.FC = () => {
   const [inputs, setInputs] = useState<ConcreteInputs>({
@@ -20,6 +21,7 @@ export const ConcreteCalculator: React.FC = () => {
 
   const [copied, setCopied] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
+  const [showAddToProject, setShowAddToProject] = useState(false);
   const [showAssumptions, setShowAssumptions] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -73,6 +75,23 @@ export const ConcreteCalculator: React.FC = () => {
     setTimeout(() => setCopied(false), 2500);
   };
 
+  const projectData: AddToProjectData | null = results ? {
+    calculatorId: 'concrete-calculator',
+    calculatorTitle: 'Concrete Volume & Mix Calculator',
+    category: 'concrete',
+    defaultName: `Concrete Slab / Footing (${results.wetVolumeCum} m³)`,
+    inputs,
+    results,
+    primaryQuantity: results.wetVolumeCum,
+    primaryUnit: 'm³',
+    materialsRollup: {
+      cementBags: results.cementBags,
+      concreteCum: results.wetVolumeCum,
+      sandCft: results.sandCft,
+      aggregateCft: results.aggregateCft
+    }
+  } : null;
+
   const printTableData = results ? [
     { label: 'Slab / Footing Dimensions', value: `${inputs.length} × ${inputs.width} × ${inputs.depth}`, unit: inputs.unit },
     { label: 'Mix Ratio Used', value: results.mixRatioLabel },
@@ -99,13 +118,15 @@ export const ConcreteCalculator: React.FC = () => {
           
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
             <div className="flex items-center gap-2">
-              <Box className="w-5 h-5 text-[#0F2D5C]" />
-              <h3 className="font-bold text-slate-900 text-base sm:text-lg">Input Measurements</h3>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-[#0F2D5C]">
+                <Box className="w-4 h-4" />
+              </div>
+              <h3 className="font-bold text-slate-800 text-base">Dimensions &amp; Proportions</h3>
             </div>
-            
+
             <button
               onClick={handleReset}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#0F2D5C] bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
+              className="text-xs font-semibold text-slate-400 hover:text-slate-600 flex items-center gap-1 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset</span>
@@ -114,89 +135,88 @@ export const ConcreteCalculator: React.FC = () => {
 
           {/* Unit Switcher */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-              Measurement Unit
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2">
+              Unit System
             </label>
             <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-xl">
               <button
                 type="button"
                 onClick={() => handleChange('unit', 'feet')}
-                className={`py-2 px-2 rounded-lg text-xs font-bold transition-all text-center ${inputs.unit === 'feet' ? 'bg-[#0F2D5C] text-white shadow' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${inputs.unit === 'feet' ? 'bg-[#0F2D5C] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
               >
-                Feet / Cubic Feet (CFT)
+                Feet &amp; Inches (Imperial)
               </button>
               <button
                 type="button"
                 onClick={() => handleChange('unit', 'meters')}
-                className={`py-2 px-2 rounded-lg text-xs font-bold transition-all text-center ${inputs.unit === 'meters' ? 'bg-[#0F2D5C] text-white shadow' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${inputs.unit === 'meters' ? 'bg-[#0F2D5C] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
               >
-                Meters / Cubic Meters (m³)
+                Meters &amp; mm (Metric)
               </button>
             </div>
           </div>
 
-          {/* Dimensions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Dimension Inputs */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Length ({inputs.unit})
+              <label className="text-xs font-bold text-slate-700 block mb-1">
+                Length ({inputs.unit === 'feet' ? 'ft' : 'm'})
               </label>
               <input
                 type="number"
-                step="any"
-                min="0.1"
-                value={inputs.length || ''}
-                onChange={(e) => handleChange('length', parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-[#0F2D5C] focus:ring-2 focus:ring-[#0F2D5C]/20 text-slate-900 font-bold text-sm sm:text-base"
-                placeholder="Length"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Width ({inputs.unit})
-              </label>
-              <input
-                type="number"
-                step="any"
-                min="0.1"
-                value={inputs.width || ''}
-                onChange={(e) => handleChange('width', parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-[#0F2D5C] focus:ring-2 focus:ring-[#0F2D5C]/20 text-slate-900 font-bold text-sm sm:text-base"
-                placeholder="Width"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Depth / Thk ({inputs.unit})
-              </label>
-              <input
-                type="number"
-                step="any"
                 min="0.01"
-                value={inputs.depth || ''}
-                onChange={(e) => handleChange('depth', parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-[#0F2D5C] focus:ring-2 focus:ring-[#0F2D5C]/20 text-slate-900 font-bold text-sm sm:text-base"
-                placeholder="Depth"
+                step="any"
+                value={inputs.length}
+                onChange={(e) => handleChange('length', parseFloat(e.target.value) || 0)}
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2D5C] focus:bg-white"
               />
             </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 block mb-1">
+                Width ({inputs.unit === 'feet' ? 'ft' : 'm'})
+              </label>
+              <input
+                type="number"
+                min="0.01"
+                step="any"
+                value={inputs.width}
+                onChange={(e) => handleChange('width', parseFloat(e.target.value) || 0)}
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2D5C] focus:bg-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 block mb-1">
+                Depth / Thickness ({inputs.unit === 'feet' ? 'ft' : 'm'})
+              </label>
+              <input
+                type="number"
+                min="0.01"
+                step="any"
+                value={inputs.depth}
+                onChange={(e) => handleChange('depth', parseFloat(e.target.value) || 0)}
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2D5C] focus:bg-white"
+              />
+            </div>
+
           </div>
 
-          {/* Mix Ratio Selector */}
+          {/* Concrete Grade / Mix Proportions */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-              Concrete Mix Grade
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2">
+              Concrete Grade / Nominal Mix Ratio
             </label>
             <select
               value={inputs.mixRatio}
               onChange={(e) => handleChange('mixRatio', e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-[#0F2D5C] focus:ring-2 focus:ring-[#0F2D5C]/20 text-slate-900 font-semibold text-sm bg-white"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0F2D5C]"
             >
-              <option value="M20">M20 (1 : 1.5 : 3) - Standard Slabs & Beams</option>
-              <option value="M25">M25 (1 : 1 : 2) - Columns & Foundations</option>
-              <option value="M15">M15 (1 : 2 : 4) - Pavements & Flooring</option>
-              <option value="M10">M10 (1 : 3 : 6) - Plain Leveling Concrete</option>
+              <option value="M20">M20 (1 : 1.5 : 3) - Slabs, Beams, Columns (Standard)</option>
+              <option value="M25">M25 (1 : 1 : 2) - Heavy Reinforced Concrete Columns</option>
+              <option value="M15">M15 (1 : 2 : 4) - Plain Footings &amp; Levelling Course</option>
+              <option value="M10">M10 (1 : 3 : 6) - Foundation Blinding Bed (PCC)</option>
               <option value="M7.5">M7.5 (1 : 4 : 8) - Foundation PCC</option>
               <option value="M5">M5 (1 : 5 : 10) - Non-Structural Mass Concrete</option>
               <option value="custom">Custom Proportion Ratio</option>
@@ -273,10 +293,19 @@ export const ConcreteCalculator: React.FC = () => {
                   </h3>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setShowAddToProject(true)}
+                    className="flex items-center gap-1 px-3 py-2 rounded-xl bg-[#F4B400] hover:bg-[#e0a500] text-[#0F2D5C] text-xs font-bold transition-all shadow-xs cursor-pointer"
+                    title="Save calculation into a project workspace"
+                  >
+                    <FolderPlus className="w-4 h-4" />
+                    <span>+ Add to Project</span>
+                  </button>
+
                   <button
                     onClick={handleCopy}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
+                    className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
                     title="Copy Results"
                   >
                     {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
@@ -285,7 +314,7 @@ export const ConcreteCalculator: React.FC = () => {
 
                   <button
                     onClick={() => setShowPrintModal(true)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] text-xs font-bold transition-colors"
+                    className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[#0F2D5C] hover:bg-[#163c78] text-[#F4B400] text-xs font-bold transition-colors cursor-pointer"
                     title="Print formal report"
                   >
                     <Printer className="w-4 h-4" />
@@ -300,72 +329,78 @@ export const ConcreteCalculator: React.FC = () => {
                 <span className="font-black text-[#0F2D5C] text-sm sm:text-base">{results.mixRatioLabel}</span>
               </div>
 
-              {/* Highlight Cement Bag Stat */}
-              <div className="bg-gradient-to-r from-[#0F2D5C] to-[#163c78] rounded-2xl p-4 sm:p-5 text-white shadow-md flex items-center justify-between gap-4">
-                <div>
-                  <span className="text-xs uppercase tracking-wider font-semibold text-slate-300">
-                    Cement Required (50kg Bags)
-                  </span>
-                  <div className="text-3xl sm:text-4xl font-black text-[#F4B400] mt-1">
-                    {results.cementBags} <span className="text-lg font-bold text-white">Bags</span>
+              {/* Concrete Volume Hero Metric */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gradient-to-br from-[#0F2D5C] to-[#163c78] text-white p-4 rounded-xl space-y-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-blue-200">Wet Concrete Volume</div>
+                  <div className="text-2xl sm:text-3xl font-black text-[#F4B400]">
+                    {results.wetVolumeCum} <span className="text-sm font-medium text-white">m³</span>
                   </div>
-                  <div className="text-xs text-slate-300 mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                    <span>Volume: <strong>{results.cementCft} CFT</strong></span>
-                    <span>Total Weight: <strong>{results.cementKg} kg</strong></span>
+                  <div className="text-xs text-blue-200 font-mono">
+                    = {results.wetVolumeCft} CFT
                   </div>
                 </div>
-                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
-                  <Box className="w-6 h-6 text-[#F4B400]" />
+
+                <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Dry Mix Volume (+54%)</div>
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900">
+                    {results.dryVolumeCum} <span className="text-sm font-medium text-slate-500">m³</span>
+                  </div>
+                  <div className="text-xs text-slate-500 font-mono">
+                    = {results.dryVolumeCft} CFT
+                  </div>
                 </div>
               </div>
 
-              {/* Detailed Material Breakdown Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="bg-slate-50 rounded-xl p-3.5 sm:p-4 border border-slate-200">
-                  <div className="text-xs font-bold text-slate-500 uppercase">Wet Concrete Volume</div>
-                  <div className="text-lg sm:text-xl font-black text-slate-900 mt-1">
-                    {results.wetVolumeCft} <span className="text-xs font-bold text-slate-500">CFT</span>
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">({results.wetVolumeCum} m³)</div>
+              {/* Material Breakdown Schedule */}
+              <div className="space-y-3">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Required Material Quantities
                 </div>
 
-                <div className="bg-slate-50 rounded-xl p-3.5 sm:p-4 border border-slate-200">
-                  <div className="text-xs font-bold text-slate-500 uppercase">Dry Volume (1.54 Factor)</div>
-                  <div className="text-lg sm:text-xl font-black text-slate-900 mt-1">
-                    {results.dryVolumeCft} <span className="text-xs font-bold text-slate-500">CFT</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  
+                  {/* Cement */}
+                  <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200">
+                    <div className="text-[11px] font-bold text-slate-500 uppercase">Cement (50kg)</div>
+                    <div className="text-xl font-black text-[#0F2D5C] mt-1">
+                      {results.cementBags} <span className="text-xs font-normal text-slate-600">Bags</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                      {results.cementKg} kg • {results.cementCft} CFT
+                    </div>
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">({results.dryVolumeCum} m³)</div>
+
+                  {/* Sand */}
+                  <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200">
+                    <div className="text-[11px] font-bold text-slate-500 uppercase">Fine Sand</div>
+                    <div className="text-xl font-black text-slate-900 mt-1">
+                      {results.sandCft} <span className="text-xs font-normal text-slate-600">CFT</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                      ~{results.sandTons} Tons • {results.sandCum} m³
+                    </div>
+                  </div>
+
+                  {/* Aggregate */}
+                  <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200">
+                    <div className="text-[11px] font-bold text-slate-500 uppercase">Coarse Aggregate</div>
+                    <div className="text-xl font-black text-slate-900 mt-1">
+                      {results.aggregateCft} <span className="text-xs font-normal text-slate-600">CFT</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                      ~{results.aggregateTons} Tons • {results.aggregateCum} m³
+                    </div>
+                  </div>
+
                 </div>
 
-                <div className="bg-amber-50/70 rounded-xl p-3.5 sm:p-4 border border-amber-200">
-                  <div className="text-xs font-bold text-amber-800 uppercase">Cement Volume in CFT</div>
-                  <div className="text-lg sm:text-xl font-black text-amber-950 mt-1">
-                    {results.cementCft} <span className="text-xs font-bold text-amber-800">CFT</span>
-                  </div>
-                  <div className="text-[11px] text-amber-700 mt-0.5">{results.cementBags} Bags @ 50kg</div>
+                {/* Water estimation */}
+                <div className="bg-blue-50/70 border border-blue-100 rounded-xl p-3 flex items-center justify-between text-xs">
+                  <span className="font-semibold text-blue-900">Estimated Water Requirement (w/c ~0.50):</span>
+                  <strong className="font-bold text-[#0F2D5C] font-mono">~{results.waterLitersEstimate} Liters</strong>
                 </div>
 
-                <div className="bg-amber-50/70 rounded-xl p-3.5 sm:p-4 border border-amber-200">
-                  <div className="text-xs font-bold text-amber-800 uppercase">Sand Quantity in CFT</div>
-                  <div className="text-lg sm:text-xl font-black text-amber-950 mt-1">
-                    {results.sandCft} <span className="text-xs font-bold text-amber-800">CFT</span>
-                  </div>
-                  <div className="text-[11px] text-amber-700 mt-0.5">~{results.sandTons} Metric Tons</div>
-                </div>
-
-                <div className="bg-emerald-50/70 rounded-xl p-3.5 sm:p-4 border border-emerald-200 sm:col-span-2">
-                  <div className="text-xs font-bold text-emerald-800 uppercase">Aggregate Quantity in CFT</div>
-                  <div className="text-lg sm:text-xl font-black text-emerald-950 mt-1">
-                    {results.aggregateCft} <span className="text-xs font-bold text-emerald-800">CFT</span>
-                  </div>
-                  <div className="text-[11px] text-emerald-700 mt-0.5">~{results.aggregateTons} Metric Tons</div>
-                </div>
-              </div>
-
-              {/* Water Recommendation */}
-              <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-[#0F2D5C] flex flex-wrap items-center justify-between gap-2">
-                <span className="font-semibold">Estimated Water Requirement (~27.5L/bag):</span>
-                <span className="font-black text-sm">{results.waterLitersEstimate} Liters</span>
               </div>
 
             </div>
@@ -375,104 +410,24 @@ export const ConcreteCalculator: React.FC = () => {
 
       </div>
 
-      {/* Formula & Assumptions Expandable Section */}
-      {results && (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
-          <button
-            onClick={() => setShowAssumptions(!showAssumptions)}
-            className="w-full p-4 sm:p-5 bg-slate-50 hover:bg-slate-100/80 transition-colors flex items-center justify-between text-left focus:outline-none"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#0F2D5C] text-[#F4B400] flex items-center justify-center shrink-0">
-                <HelpCircle className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm sm:text-base">
-                  Formula & Assumptions
-                </h4>
-                <p className="text-xs text-slate-500">
-                  Standard engineering parameters and volumetric factors used in this calculation
-                </p>
-              </div>
-            </div>
-            <div className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
-              {showAssumptions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </div>
-          </button>
-
-          {showAssumptions && (
-            <div className="p-4 sm:p-6 border-t border-slate-200 bg-white space-y-4 animate-in fade-in duration-200">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C]">
-                    Dry Volume Factor = 1.54
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Concrete shrinks when mixed with water as dry loose aggregate and sand particles settle into void spaces. A standard factor multiplier of <strong>1.54</strong> is applied to convert wet volume into required dry volume.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C]">
-                    Cement Bag Volume = 1.226 CFT
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    One standard commercial bag of Portland cement occupies approximately <strong>1.226 cubic feet (CFT)</strong> or 0.0347 m³ of uncompacted dry volume.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C]">
-                    Cement Bag Weight = 50 kg
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Standard unit weight assumption per commercial cement bag is <strong>50 kg</strong> (110.23 lbs).
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#0F2D5C]">
-                    Selected Mix Ratio = {results.mixRatioLabel}
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    The calculation uses volumetric proportion parts (Cement : Sand : Coarse Aggregate) as specified by structural engineering codes (IS 456 / ACI).
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      {/* Add To Project Modal */}
+      {showAddToProject && projectData && (
+        <AddToProjectModal
+          data={projectData}
+          onClose={() => setShowAddToProject(false)}
+        />
       )}
 
-      {/* Step by step formula breakdown */}
-      {results && (
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-3">
-          <h4 className="font-bold text-slate-900 text-sm uppercase tracking-wider flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#0F2D5C]" />
-            <span>Step-by-Step Mathematical Derivation</span>
-          </h4>
-          <div className="bg-slate-50 rounded-xl p-3.5 sm:p-4 border border-slate-200 font-mono text-xs text-slate-700 space-y-1.5 overflow-x-auto">
-            {results.steps.map((st, i) => (
-              <div key={i} className="whitespace-pre-wrap">{st}</div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Printable Report Modal */}
+      {/* Print / Export Report Modal */}
       {showPrintModal && results && (
         <PrintModal
-          title="Concrete & Cement Material Estimation Report"
-          summaryText={`Calculation performed for ${inputs.length} × ${inputs.width} × ${inputs.depth} ${inputs.unit} slab using ${results.mixRatioLabel}.`}
-          steps={results.steps}
+          title="Concrete Volume & Material Estimation Report"
+          inputs={inputs}
           resultsTable={printTableData}
           onClose={() => setShowPrintModal(false)}
-          onCopy={handleCopy}
-          copied={copied}
         />
       )}
 
     </div>
   );
 };
-

@@ -34,6 +34,7 @@ import { ConcreteMixCalculator } from './calculators/ConcreteMixCalculator';
 import { UnitConverter } from './calculators/UnitConverter';
 import { FAQSection } from './FAQSection';
 import { SEO } from './SEO';
+import { CalculatorSaveBar } from './CalculatorSaveBar';
 import { ArrowLeft, BookOpen, Sparkles, CheckCircle2, ArrowRight, HelpCircle, Layers, FileCode, Info, ListChecks, Lightbulb, AlertTriangle } from 'lucide-react';
 
 interface CalculatorEngineProps {
@@ -247,6 +248,9 @@ export const CalculatorEngine: React.FC<CalculatorEngineProps> = ({
 
         {/* Active Interactive Calculator Component */}
         {renderActiveCalculatorComponent()}
+
+        {/* Save to Project Workspace Action Bar */}
+        <CalculatorSaveBar meta={meta} />
 
         {/* Mandatory Legal & Technical Disclaimer */}
         <div className="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-4 flex items-start gap-3 text-xs text-amber-900 leading-relaxed shadow-sm">

@@ -14,6 +14,10 @@ import { PrivacyPage } from './components/PrivacyPage';
 import { TermsPage } from './components/TermsPage';
 import { SearchModal } from './components/SearchModal';
 import { DisclaimerModal } from './components/DisclaimerModal';
+import { ProjectsDashboard } from './components/projects/ProjectsDashboard';
+import { ProjectDetailView } from './components/projects/ProjectDetailView';
+import { BOQBuilderPage } from './components/boq/BOQBuilderPage';
+import { MaterialsDatabasePage } from './components/materials/MaterialsDatabasePage';
 import { getSlugFromId } from './utils/slugs';
 
 export default function App() {
@@ -43,15 +47,27 @@ export default function App() {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<HomePage onSearchOpen={() => setSearchModalOpen(true)} />} />
+          
+          {/* Calculators & Categories */}
           <Route path="/calculators" element={<CalculatorsDirectoryPage />} />
           <Route path="/calculators/:slug" element={<CalculatorPageRoute />} />
           <Route path="/categories" element={<CategoriesDirectoryPage />} />
           <Route path="/categories/:categoryId" element={<CategoryDetailPage />} />
+          
+          {/* Construction Estimation Workspace */}
+          <Route path="/projects" element={<ProjectsDashboard />} />
+          <Route path="/projects/:projectId" element={<ProjectDetailView />} />
+          <Route path="/boq" element={<BOQBuilderPage />} />
+          <Route path="/materials" element={<MaterialsDatabasePage />} />
+
+          {/* Resources & Legal */}
           <Route path="/blog" element={<BlogView />} />
           <Route path="/about" element={<AboutView />} />
           <Route path="/contact" element={<ContactView />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+
+          {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

@@ -1,64 +1,74 @@
 import React from 'react';
-import { MousePointerClick, Edit3, Cpu, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Calculator, FolderPlus, Layers, FileSpreadsheet, Printer, ArrowRight } from 'lucide-react';
 
 export const HowItWorks: React.FC = () => {
   const steps = [
     {
       num: '01',
-      icon: <MousePointerClick className="w-6 h-6 text-[#0F2D5C]" />,
-      title: 'Choose Tool',
-      desc: 'Select from concrete, steel, brick, tile, paint, or cost calculators.'
+      icon: <Calculator className="w-5 h-5" />,
+      title: 'CALCULATE',
+      desc: 'Enter dimensions, mix ratios, or bar sizes in any specialized construction calculator.'
     },
     {
       num: '02',
-      icon: <Edit3 className="w-6 h-6 text-[#0F2D5C]" />,
-      title: 'Enter Measurements',
-      desc: 'Input dimensions in feet or meters with optional wastage & mix ratio.'
+      icon: <FolderPlus className="w-5 h-5" />,
+      title: 'SAVE',
+      desc: 'Click "+ Add to Project" to store material quantities and calculations with 1-click.'
     },
     {
       num: '03',
-      icon: <Cpu className="w-6 h-6 text-[#0F2D5C]" />,
-      title: 'Calculate',
-      desc: 'Instant calculation executed locally in your browser using standard formulas.'
+      icon: <Layers className="w-5 h-5" />,
+      title: 'PROJECT',
+      desc: 'Track aggregate cement bags, rebar tonnage, concrete m³ and floor areas across the site.'
     },
     {
       num: '04',
-      icon: <CheckCircle2 className="w-6 h-6 text-[#0F2D5C]" />,
-      title: 'Get Results',
-      desc: 'View itemized quantities, copy or print formal summary reports.'
+      icon: <FileSpreadsheet className="w-5 h-5" />,
+      title: 'BOQ',
+      desc: 'Assemble trade sections, enter itemized unit rates, and auto-compute VAT & subtotals.'
+    },
+    {
+      num: '05',
+      icon: <Printer className="w-5 h-5" />,
+      title: 'EXPORT PDF',
+      desc: 'Generate client quotations, site tender schedules, and downloadable Excel spreadsheets.'
     }
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-12 bg-white border-y border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#0F2D5C] bg-blue-100 px-3 py-1 rounded-full">
-            Simple 4-Step Process
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#0F2D5C] bg-blue-50 px-3 py-1 rounded-full">
+            The BuildMetric Method
           </span>
-          <h2 className="text-3xl font-black text-slate-900 mt-3 tracking-tight">
-            How BuildMetric Works
+          <h2 className="text-3xl font-black text-slate-900 mt-2 tracking-tight">
+            How Estimation Workspace Works
           </h2>
-          <p className="text-slate-600 text-sm mt-2">
-            Get accurate civil material estimates in less than 30 seconds.
+          <p className="text-slate-600 text-xs sm:text-sm mt-1">
+            A seamless bridge from on-site structural calculations to client-ready tender proposals.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {steps.map((step, idx) => (
-            <div key={idx} className="relative bg-slate-50 rounded-2xl p-6 border border-slate-200 text-center flex flex-col items-center group hover:border-[#0F2D5C] transition-colors">
-              <span className="absolute -top-4 bg-[#0F2D5C] text-[#F4B400] text-xs font-black px-3 py-1 rounded-full shadow-md">
-                STEP {step.num}
-              </span>
-              <div className="w-14 h-14 rounded-2xl bg-blue-100/70 border border-blue-200 flex items-center justify-center mb-4 mt-2 group-hover:bg-[#0F2D5C] transition-colors">
-                {React.cloneElement(step.icon, {
-                  className: "w-6 h-6 text-[#0F2D5C] group-hover:text-[#F4B400] transition-colors"
-                })}
+            <div
+              key={idx}
+              className="bg-slate-50 rounded-2xl p-5 border border-slate-200 text-center flex flex-col items-center hover:border-[#0F2D5C] transition-all group shadow-xs"
+            >
+              <div className="w-8 h-8 rounded-full bg-[#0F2D5C] text-[#F4B400] text-xs font-black flex items-center justify-center mb-3">
+                {step.num}
               </div>
-              <h3 className="font-bold text-slate-900 text-lg mb-2">
+
+              <div className="w-12 h-12 rounded-xl bg-blue-100/70 border border-blue-200 flex items-center justify-center mb-3 group-hover:bg-[#0F2D5C] group-hover:text-[#F4B400] text-[#0F2D5C] transition-colors">
+                {step.icon}
+              </div>
+
+              <h3 className="font-black text-slate-900 text-sm tracking-wider uppercase mb-1.5">
                 {step.title}
               </h3>
+
               <p className="text-xs text-slate-600 leading-relaxed">
                 {step.desc}
               </p>

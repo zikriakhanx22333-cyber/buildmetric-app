@@ -650,4 +650,123 @@ export interface BOQItem {
   quantity: number;
   rate: number;
   amount: number;
+  sectionId?: string;
+  costComposition?: {
+    materialRate?: number;
+    labourRate?: number;
+    equipmentRate?: number;
+    overheadRate?: number;
+    profitPercent?: number;
+  };
+  notes?: string;
+}
+
+export type ProjectType = 'Residential' | 'Commercial' | 'Industrial' | 'Infrastructure' | 'Other';
+export type UnitSystem = 'Metric' | 'Imperial';
+export type CurrencyCode = 'SAR' | 'AED' | 'USD' | 'EUR' | 'PKR' | 'GBP' | 'INR' | 'CAD' | 'QAR' | 'KWD' | 'OMR' | 'BHD';
+
+export interface MaterialQuantityRollup {
+  cementBags: number;
+  steelKg: number;
+  steelTons: number;
+  concreteCum: number;
+  concreteCft: number;
+  sandCum: number;
+  sandCft: number;
+  sandTons: number;
+  aggregateCum: number;
+  aggregateCft: number;
+  aggregateTons: number;
+  bricksCount: number;
+  blocksCount: number;
+  tilesSqM: number;
+  paintLiters: number;
+}
+
+export interface SavedCalculation {
+  id: string;
+  projectId: string;
+  calculatorId: CalculatorId;
+  calculatorTitle: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  category: CategoryId;
+  inputs: Record<string, any>;
+  results: Record<string, any>;
+  primaryQuantity: number;
+  primaryUnit: string;
+  materialsRollup?: Partial<MaterialQuantityRollup>;
+  notes?: string;
+  addedToBOQ?: boolean;
+}
+
+export interface BOQSection {
+  id: string;
+  code: string;
+  title: string;
+  items: BOQItem[];
+}
+
+export interface ProjectBOQ {
+  id: string;
+  projectId: string;
+  name: string;
+  currency: CurrencyCode;
+  unitSystem: UnitSystem;
+  sections: BOQSection[];
+  taxPercent: number; // VAT or local tax
+  contingencyPercent: number;
+  discountPercent?: number;
+  lastUpdated: string;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  type: ProjectType;
+  location: string;
+  clientName?: string;
+  areaSqM?: number;
+  areaSqFt?: number;
+  numberOfFloors?: number;
+  currency: CurrencyCode;
+  unitSystem: UnitSystem;
+  status: 'Planning' | 'In Progress' | 'Under Review' | 'Completed' | 'Archived';
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+  calculations: SavedCalculation[];
+  boq: ProjectBOQ;
+  estimatedCost: number;
+  materialsCost?: number;
+  labourCost?: number;
+  equipmentCost?: number;
+  otherCost?: number;
+}
+
+export interface MaterialItem {
+  id: string;
+  name: string;
+  category: 'Cement' | 'Steel' | 'Sand' | 'Aggregate' | 'Bricks' | 'Blocks' | 'Tiles' | 'Paint' | 'Electrical' | 'Plumbing' | 'Other';
+  unit: string;
+  defaultRate: number;
+  currency: CurrencyCode;
+  supplier?: string;
+  gradeOrSpec?: string;
+  densityKgCum?: number;
+  notes?: string;
+  isCustom?: boolean;
+  lastUpdated: string;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  companyName?: string;
+  role?: string;
+  defaultCurrency: CurrencyCode;
+  defaultUnitSystem: UnitSystem;
+  isGuest: boolean;
 }
