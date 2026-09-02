@@ -10,7 +10,7 @@ export interface CalculatorGuide {
   exampleTitle: string;
   exampleText: string;
   tips: string[];
-  workflowGroup: 'concrete' | 'steel' | 'masonry' | 'finishing' | 'earthwork' | 'cost' | 'converters';
+  workflowGroup: 'concrete' | 'steel' | 'masonry' | 'finishing' | 'earthwork' | 'cost' | 'converters' | 'structural';
 }
 
 export const CALCULATOR_GUIDES: Record<CalculatorId, CalculatorGuide> = {
@@ -980,5 +980,197 @@ This multi-purpose construction unit converter handles length (feet, meters, inc
       'Keep unit references handy on site for checking vendor material receipts.'
     ],
     workflowGroup: 'converters'
+  },
+  'gfrc-mix-calculator': {
+    explanation: 'Glass Fiber Reinforced Concrete (GFRC / GRC) is a high-performance architectural composite combining white Portland cement, silica sand, alkali-resistant (AR) glass fibers (minimum 16.7% zirconia content), acrylic copolymer polymer emulsion, superplasticizer, and water. Unlike conventional concrete, GFRC does not require steel reinforcement, allowing slender 12mm to 25mm wall sections for architectural panels, countertops, and facade claddings.',
+    howToUseSteps: [
+      'Enter total target batch volume (in liters, cubic meters, or cubic feet).',
+      'Select production method: Spray-Up (4%-5% fiber) or Premix / Cast (2%-3% fiber).',
+      'Set sand-to-cement ratio (standard 1:1 or 1:0.8).',
+      'Choose polymer solids dosage and water-to-cement ratio (0.30 - 0.35).',
+      'Review exact weight breakdown of cement, silica sand, AR fibers, acrylic polymer, superplasticizer, and water.'
+    ],
+    whatYouNeed: [
+      'Target GFRC Batch Volume',
+      'Mix Technique (Spray-up vs Premix Pour)',
+      'AR Glass Fiber Specification (Zirconia ZrO₂ ≥ 16.7%)',
+      'Water-to-Cement Ratio (recommended 0.32)'
+    ],
+    formulaTitle: 'GFRC / GRC Mix Design Formulas',
+    formulaDetails: [
+      'Matrix Density = ~2,100 kg/m³ (Premix) to ~2,250 kg/m³ (Sprayed GFRC)',
+      'Sand-to-Cement Ratio = 1.0 : 1.0 (by dry weight)',
+      'Water / Cement Ratio (Effective) = 0.30 - 0.35 (accounting for polymer water content)',
+      'Polymer Solids = 5% to 7% of cement weight',
+      'AR Glass Fiber = 3% (Premix) or 5% (Sprayed) of total mix weight'
+    ],
+    formulaExplanation: 'Dry silica sand and cement form the slurry matrix. The acrylic curing polymer eliminates the need for 7-day wet curing, while AR glass fibers bridge micro-cracks under tension.',
+    exampleTitle: 'Step-by-Step Worked Example (100 Liters GFRC Premix Countertop)',
+    exampleText: 'Target Volume: 100 Liters (0.10 m³).\nAt 2,100 kg/m³ density, total batch weight is 210 kg.\n1. White Cement: ~92 kg (~1.84 bags of 50kg)\n2. Washed Silica Sand: ~92 kg\n3. Acrylic Polymer (50% solids): ~11 kg\n4. Net Mixing Water: ~26 Liters\n5. Polycarboxylate Superplasticizer: ~0.55 Liters\n6. AR Glass Fibers (3%): ~6.3 kg (13mm chopped strands)',
+    tips: [
+      'Always add glass fibers during the final 60 to 90 seconds of mixing to prevent fiber filament bundle breakdown.',
+      'Maintain an effective water-to-cement ratio strictly between 0.30 and 0.35 for maximum flexural tensile strength.'
+    ],
+    workflowGroup: 'concrete'
+  },
+  'ytong-aac-calculator': {
+    explanation: 'Autoclaved Aerated Concrete (AAC), commonly known under brand names such as YTONG and Hebel, is an ultra-lightweight, thermal-insulating masonry block produced through sand, lime, cement, water, and aluminum powder expansion. AAC blocks weigh one-third of conventional dense concrete blocks while delivering thermal conductivity (k-value) as low as 0.12 W/m·K.',
+    howToUseSteps: [
+      'Enter wall length and height in meters or feet.',
+      'Subtract areas of windows, doors, and structural openings.',
+      'Select AAC block thickness (100mm, 150mm, 200mm, or 250mm).',
+      'Choose block length (standard 600mm) and height (200mm / 250mm).',
+      'Review output: total AAC blocks, thin-bed polymer adhesive bags (2-3mm joint), and thermal U-value.'
+    ],
+    whatYouNeed: [
+      'Wall Dimensions (Length and Height)',
+      'Total Openings Area for Doors/Windows',
+      'Selected AAC Block Thickness and Dimensions',
+      'Thin-bed Adhesive Consumption Allowance'
+    ],
+    formulaTitle: 'AAC Block & Adhesive Formulas',
+    formulaDetails: [
+      'Net Wall Area (m²) = (Length × Height) - Openings Area',
+      'Single Block Face Area (m²) = Length × Height (e.g. 0.60m × 0.20m = 0.12 m²)',
+      'Blocks per m² = 1 / Face Area (e.g. 8.33 blocks/m² for 600×200mm blocks)',
+      'Total Blocks = Net Area × Blocks/m² × (1 + Wastage%)',
+      'Thin-Bed Adhesive = ~3.5 to 4.5 kg per m² of 200mm AAC wall'
+    ],
+    formulaExplanation: 'Because AAC blocks are precision-sawn with ±1mm tolerances, they are laid using 2mm to 3mm thin-bed polymer dry-mix adhesive instead of 15mm thick sand-cement mortar.',
+    exampleTitle: 'Step-by-Step Worked Example (100 m² Exterior AAC Wall)',
+    exampleText: 'Net Wall Area: 100 m² with 200mm thick YTONG AAC blocks (600×200mm).\n1. Blocks per m²: 1 / (0.6 × 0.2) = 8.33 blocks/m²\n2. Net blocks: 100 × 8.33 = 833 blocks\n3. With 5% cutting wastage: 833 × 1.05 = 875 blocks\n4. Thin-bed mortar required: 100 m² × 4.0 kg/m² = 400 kg (10 bags of 40kg adhesive)',
+    tips: [
+      'Use a notched trowel to lay thin-bed adhesive evenly and eliminate thermal bridging.',
+      'Install corrosion-resistant wall ties every 2 courses to anchor AAC masonry to concrete columns.'
+    ],
+    workflowGroup: 'masonry'
+  },
+  'staircase-calculator': {
+    explanation: 'Reinforced concrete (RCC) staircases consist of inclined waist slabs, triangular step masses, and horizontal landing slabs. Accurately determining the combined volume of waist concrete, landing concrete, and steps ensures precise batching and avoids cold joints during pouring.',
+    howToUseSteps: [
+      'Enter floor-to-floor clear height and flight width.',
+      'Specify desired riser height (150-175mm) and tread going depth (250-300mm).',
+      'Input waist slab structural thickness (125-150mm) and landing slab length.',
+      'Select concrete grade (M20 or M25) and rebar density.',
+      'Review total concrete volume (m³ and CFT), cement bags, and estimated steel rebar schedule.'
+    ],
+    whatYouNeed: [
+      'Floor-to-Floor Height',
+      'Stair Flight Width',
+      'Riser and Tread Dimensions',
+      'Waist Slab Thickness and Landing Dimensions'
+    ],
+    formulaTitle: 'Staircase Structural Geometry Formulas',
+    formulaDetails: [
+      'Number of Risers = Total Height / Target Riser Height',
+      'Number of Treads = Number of Risers - 1',
+      'Inclined Flight Length = √(Going² + Rise²)',
+      'Waist Slab Volume = Inclined Length × Width × Thickness',
+      'Steps Volume = 0.5 × Riser × Tread × Width × Number of Treads',
+      'Landing Volume = Landing Length × Width × Thickness'
+    ],
+    formulaExplanation: 'The total concrete equals the sum of the inclined waist slab, all triangular steps, and landing slabs, plus 5% wastage.',
+    exampleTitle: 'Step-by-Step Worked Example (3.0m Story Height Staircase)',
+    exampleText: 'Story Height: 3.0m, Width: 1.2m, Riser: 160mm, Tread: 280mm, Waist: 150mm.\n1. Risers: 3000 / 160 = 19 risers @ 158mm\n2. Treads: 18 treads (Going = 5.04m)\n3. Inclined Length: √(5.04² + 3.0²) = 5.86m\n4. Waist Volume: 5.86 × 1.2 × 0.15 = 1.05 m³\n5. Steps Volume: 0.5 × 0.158 × 0.28 × 1.2 × 18 = 0.48 m³\n6. Landing Volume (1.2m length): 1.2 × 1.2 × 0.15 = 0.22 m³\nTotal Concrete = 1.75 m³ (with 5% buffer: ~1.84 m³)',
+    tips: [
+      'Ensure the comfort rule 2R + T = 600mm to 640mm is satisfied for ergonomic stair ascent.',
+      'Place top and bottom rebar chairs to prevent waist slab reinforcement displacement during vibration.'
+    ],
+    workflowGroup: 'structural'
+  },
+  'building-quantity-estimator': {
+    explanation: 'Whole-building quantity estimation applies civil engineering empirical thumb rules based on total built-up area (BUA) to project material takeoffs for residential villas, multi-story buildings, and commercial spaces before detailed architectural and structural blueprints are drafted.',
+    howToUseSteps: [
+      'Enter total built-up area per floor in square feet or square meters.',
+      'Select total number of stories / floors.',
+      'Choose structural framing system (RCC framed vs load-bearing masonry).',
+      'Select preferred currency for cost projection.',
+      'Review complete bill of quantities: cement bags, steel tonnage, concrete m³, sand, aggregate, blocks, and estimated total budget.'
+    ],
+    whatYouNeed: [
+      'Built-Up Area (BUA)',
+      'Number of Stories',
+      'Framing Type (RCC vs Masonry)',
+      'Regional Construction Cost Benchmarks'
+    ],
+    formulaTitle: 'Civil Engineering Empirical Takeoff Thumb Rules',
+    formulaDetails: [
+      'Cement Consumption = ~0.40 - 0.45 bags per sq ft of BUA',
+      'Reinforcement Steel = ~3.5 - 4.2 kg per sq ft of BUA (RCC Frame)',
+      'Ready-Mix / Cast Concrete = ~0.038 m³ per sq ft of BUA',
+      'Fine Sand = ~1.8 - 2.0 CFT per sq ft of BUA',
+      'Coarse Aggregate = ~1.3 - 1.5 CFT per sq ft of BUA',
+      'Masonry Blocks = ~1.3 to 1.5 standard 200mm blocks per sq ft of BUA'
+    ],
+    formulaExplanation: 'Civil engineering empirical benchmarks derived from hundreds of executed residential and commercial structures yield high-accuracy early stage feasibility budgets.',
+    exampleTitle: 'Step-by-Step Worked Example (2,000 sq ft Two-Story Villa)',
+    exampleText: 'Total BUA: 4,000 sq ft across 2 floors.\n1. Cement Bags: 4,000 × 0.42 = ~1,680 Bags (84 Metric Tons)\n2. Steel Rebar: 4,000 × 3.9 kg = ~15,600 kg (15.6 Metric Tons)\n3. Concrete: 4,000 × 0.038 = ~152 m³ (5,368 CFT)\n4. Masonry Blocks: 4,000 × 1.35 = ~5,400 Blocks\n5. Sand: 4,000 × 1.85 = ~7,400 CFT\n6. Aggregate: 4,000 × 1.35 = ~5,400 CFT',
+    tips: [
+      'Add 10% contingency for sloping sites or poor soil bearing capacity requiring raft foundations.',
+      'Cross-check regional material market rates when preparing commercial bid tenders.'
+    ],
+    workflowGroup: 'cost'
+  },
+  'saudi-cost-calculator': {
+    explanation: 'Tailored specifically for the Kingdom of Saudi Arabia construction market, this calculator estimates residential villa construction costs and material bills of quantities according to the Saudi Building Code (SBC) and prevailing 2025-2026 market rates across Riyadh, Jeddah, and the Eastern Province.',
+    howToUseSteps: [
+      'Enter total built-up area in square meters (m²).',
+      'Select project location (Riyadh, Jeddah, Dammam / Khobar, or Other).',
+      'Choose contract model: Bone with materials (عظم بالمواد), bone labor only (مصنعية), or turnkey (تسليم مفتاح).',
+      'Toggle 15% ZATCA VAT calculation.',
+      'Review total cost in Saudi Riyals (SAR), cost per m², and material quantities (Sabic steel, ready-mix concrete, volcanic blocks, and Yamama cement).'
+    ],
+    whatYouNeed: [
+      'Total Built-Up Area in m²',
+      'Location within Saudi Arabia',
+      'Contract Scope (Grey Structure vs Turnkey)',
+      '15% VAT Inclusions'
+    ],
+    formulaTitle: 'Saudi Construction Cost & Quantity Benchmark Formulas',
+    formulaDetails: [
+      'Total Base Cost (SAR) = Built-Up Area (m²) × Regional Rate per m²',
+      'ZATCA VAT (15%) = Total Base Cost × 0.15',
+      'Total Contract Price = Total Base Cost + VAT',
+      'SBC Ready-Mix Concrete Volume (m³) = Area × 0.42 m³/m²',
+      'SBC Steel Rebar (Sabic / Al-Ittefaq) = Area × 52 kg/m² (0.052 Tons/m²)',
+      'Thermal Insulated Blocks = Area × 14.5 blocks/m²'
+    ],
+    formulaExplanation: 'Calculations reference municipal building density regulations, Saudi Building Code structural minimums, and active supplier indices.',
+    exampleTitle: 'Step-by-Step Worked Example (600 m² Villa in Riyadh)',
+    exampleText: 'Built-up Area: 600 m² in Riyadh, contract type Bone with Materials (عظم بالمواد @ 620 SAR/m²).\n1. Base Cost: 600 × 620 = 372,000 SAR\n2. 15% VAT: 372,000 × 0.15 = 55,800 SAR\n3. Total Contract Price: 427,800 SAR\n4. Material Takeoff:\n   - Steel Rebar: 600 × 52 kg = 31.2 Metric Tons (Grade 60)\n   - Ready-Mix Concrete: 600 × 0.42 = 252 m³ (C30/C35)\n   - Insulated Blocks: 600 × 14.5 = 8,700 Blocks\n   - Cement: 600 × 4.6 = ~2,760 Bags (for screed, plaster, and mortar)',
+    tips: [
+      'Obtain an approved soil report (تقرير فحص التربة) before finalizing foundation depth to avoid unforeseen excavation costs in rocky Riyadh terrain.',
+      'Ensure certified test cube compressive strength reports (28 days) are stamped by the ready-mix laboratory.'
+    ],
+    workflowGroup: 'cost'
+  },
+  'retaining-wall-calculator': {
+    explanation: 'Retaining walls resist lateral earth pressures from backfill soils, surcharges, and hydrostatic water levels. This calculator estimates the concrete stem, base footing slab, drainage aggregate, and reinforcement steel required for cantilever and gravity retaining walls.',
+    howToUseSteps: [
+      'Enter wall length and retained stem height.',
+      'Specify stem thickness (top and bottom taper) and footing base width.',
+      'Input retained soil unit weight and surcharge angle.',
+      'Review output: concrete volume (m³ / CFT), backfill drainage stone, and steel rebar weight.'
+    ],
+    whatYouNeed: [
+      'Wall Length and Clear Retained Height',
+      'Stem and Base Footing Geometry',
+      'Soil Backfill Density and Drainage Requirements'
+    ],
+    formulaTitle: 'Retaining Wall Concrete Volume & Surcharge Formulas',
+    formulaDetails: [
+      'Stem Trapezoidal Volume = Length × [0.5 × (Top Thickness + Bottom Thickness)] × Stem Height',
+      'Base Footing Volume = Length × Base Width × Base Thickness',
+      'Total Concrete = Stem Volume + Base Footing Volume + 5% Wastage',
+      'Reinforcement Steel = ~100 to 130 kg per m³ of structural concrete'
+    ],
+    formulaExplanation: 'Concrete quantities are derived by decomposing the wall cross-section into a vertical trapezoidal stem and horizontal rectangular footing slab.',
+    exampleTitle: 'Step-by-Step Worked Example (20m Cantilever Retaining Wall)',
+    exampleText: 'Length: 20m, Height: 3.0m, Base Width: 1.8m, Base Thickness: 0.35m, Stem Bottom: 0.35m, Stem Top: 0.20m.\n1. Stem Volume: 20 × [0.5 × (0.20 + 0.35)] × 2.65 = 14.58 m³\n2. Base Volume: 20 × 1.8 × 0.35 = 12.60 m³\n3. Total Concrete: 14.58 + 12.60 = 27.18 m³ (~28.5 m³ with wastage)\n4. Estimated Steel: 28.5 m³ × 110 kg/m³ = 3,135 kg (3.14 Metric Tons)',
+    tips: [
+      'Always install perforated drainage weep holes (75mm - 100mm PVC pipes @ 1.5m spacing) with geo-textile filter fabric to relieve hydrostatic pressure.',
+      'Never backfill with expansive clay soils; use well-graded granular crushed gravel.'
+    ],
+    workflowGroup: 'structural'
   }
 };

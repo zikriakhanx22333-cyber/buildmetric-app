@@ -39,7 +39,13 @@ export type CalculatorId =
   | 'boq-estimator'
   | 'mortar-calculator'
   | 'concrete-mix-calculator'
-  | 'unit-converter';
+  | 'unit-converter'
+  | 'gfrc-mix-calculator'
+  | 'ytong-aac-calculator'
+  | 'staircase-calculator'
+  | 'building-quantity-estimator'
+  | 'saudi-cost-calculator'
+  | 'retaining-wall-calculator';
 
 export interface CategoryInfo {
   id: CategoryId;

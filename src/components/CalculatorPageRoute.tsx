@@ -10,7 +10,13 @@ export const CalculatorPageRoute: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  const calcId = slug ? getIdFromSlug(slug) : null;
+  // If path is /saudi or slug is saudi
+  let effectiveSlug = slug;
+  if (!effectiveSlug && window.location.pathname.startsWith('/saudi')) {
+    effectiveSlug = 'saudi-cost-calculator';
+  }
+
+  const calcId = effectiveSlug ? getIdFromSlug(effectiveSlug) : null;
   const meta = calcId ? CALCULATORS.find(c => c.id === calcId) : null;
 
   if (!calcId || !meta) {

@@ -32,6 +32,11 @@ import { BOQEstimator } from './calculators/BOQEstimator';
 import { MortarCalculator } from './calculators/MortarCalculator';
 import { ConcreteMixCalculator } from './calculators/ConcreteMixCalculator';
 import { UnitConverter } from './calculators/UnitConverter';
+import { GfrcMixCalculator } from './calculators/GfrcMixCalculator';
+import { YtongAacCalculator } from './calculators/YtongAacCalculator';
+import { StaircaseCalculator } from './calculators/StaircaseCalculator';
+import { BuildingQuantityEstimator } from './calculators/BuildingQuantityEstimator';
+import { SaudiCostCalculator } from './calculators/SaudiCostCalculator';
 import { FAQSection } from './FAQSection';
 import { SEO } from './SEO';
 import { CalculatorSaveBar } from './CalculatorSaveBar';
@@ -114,6 +119,16 @@ export const CalculatorEngine: React.FC<CalculatorEngineProps> = ({
         return <MortarCalculator />;
       case 'concrete-mix-calculator':
         return <ConcreteMixCalculator />;
+      case 'gfrc-mix-calculator':
+        return <GfrcMixCalculator />;
+      case 'ytong-aac-calculator':
+        return <YtongAacCalculator />;
+      case 'staircase-calculator':
+        return <StaircaseCalculator />;
+      case 'building-quantity-estimator':
+        return <BuildingQuantityEstimator />;
+      case 'saudi-cost-calculator':
+        return <SaudiCostCalculator />;
       default:
         return <ConcreteCalculator />;
     }

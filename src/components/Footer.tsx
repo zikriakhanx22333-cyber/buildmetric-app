@@ -49,7 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDisclaimer }) => {
               <span>Calculators</span>
             </h3>
             <ul className="space-y-2 text-sm">
-              {CALCULATORS.slice(0, 6).map((calc) => (
+              {CALCULATORS.slice(0, 4).map((calc) => (
                 <li key={calc.id}>
                   <button
                     onClick={() => navigateTo(`/calculators/${getSlugFromId(calc.id)}`)}
@@ -59,6 +59,38 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDisclaimer }) => {
                   </button>
                 </li>
               ))}
+              <li>
+                <button
+                  onClick={() => navigateTo('/calculators/gfrc-mix-calculator')}
+                  className="hover:text-[#F4B400] transition-colors text-left line-clamp-1 cursor-pointer"
+                >
+                  GFRC / GRC Mix Calculator
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigateTo('/calculators/ytong-aac-calculator')}
+                  className="hover:text-[#F4B400] transition-colors text-left line-clamp-1 cursor-pointer"
+                >
+                  YTONG AAC Block Calculator
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigateTo('/converters')}
+                  className="hover:text-[#F4B400] transition-colors text-left line-clamp-1 cursor-pointer text-[#F4B400] font-semibold"
+                >
+                  Unit Converters (CFT/m³) →
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigateTo('/ar/calculators')}
+                  className="hover:text-[#F4B400] transition-colors text-left line-clamp-1 cursor-pointer text-[#F4B400] font-semibold"
+                >
+                  حاسبات البناء بالعربية (عربي) →
+                </button>
+              </li>
             </ul>
           </div>
 

@@ -196,6 +196,27 @@ export const Header: React.FC<HeaderProps> = ({ onSearchOpen }) => {
                       All Disciplines & Categories
                     </button>
                     <button
+                      onClick={() => navigateTo('/converters')}
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 cursor-pointer flex items-center justify-between"
+                    >
+                      <span>Engineering Unit Converters</span>
+                      <span className="text-[10px] bg-blue-50 text-[#0F2D5C] px-1.5 py-0.5 rounded font-bold">CFT/m³</span>
+                    </button>
+                    <button
+                      onClick={() => navigateTo('/saudi')}
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 cursor-pointer flex items-center justify-between"
+                    >
+                      <span>Saudi Construction (SBC & VAT)</span>
+                      <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-bold">KSA</span>
+                    </button>
+                    <button
+                      onClick={() => navigateTo('/ar/calculators')}
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 cursor-pointer flex items-center justify-between font-bold text-[#0F2D5C]"
+                    >
+                      <span>حاسبات البناء بالعربية</span>
+                      <span className="text-[10px] bg-amber-50 text-amber-800 px-1.5 py-0.5 rounded">عربي</span>
+                    </button>
+                    <button
                       onClick={() => navigateTo('/blog')}
                       className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 cursor-pointer"
                     >
@@ -306,6 +327,24 @@ export const Header: React.FC<HeaderProps> = ({ onSearchOpen }) => {
                 className="text-left px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold cursor-pointer"
               >
                 Categories
+              </button>
+              <button
+                onClick={() => navigateTo('/converters')}
+                className="text-left px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold cursor-pointer"
+              >
+                Unit Converters
+              </button>
+              <button
+                onClick={() => navigateTo('/saudi')}
+                className="text-left px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-800 text-sm font-bold cursor-pointer"
+              >
+                Saudi Suite (SAR)
+              </button>
+              <button
+                onClick={() => navigateTo('/ar/calculators')}
+                className="text-left px-3 py-2.5 rounded-xl bg-amber-50 text-amber-900 text-sm font-bold cursor-pointer"
+              >
+                حاسبات بالعربية
               </button>
             </div>
 

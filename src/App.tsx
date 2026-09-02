@@ -18,6 +18,9 @@ import { ProjectsDashboard } from './components/projects/ProjectsDashboard';
 import { ProjectDetailView } from './components/projects/ProjectDetailView';
 import { BOQBuilderPage } from './components/boq/BOQBuilderPage';
 import { MaterialsDatabasePage } from './components/materials/MaterialsDatabasePage';
+import { QuickConverterPage } from './components/converters/QuickConverterPage';
+import { ArabicCalculatorPage } from './components/arabic/ArabicCalculatorPage';
+import { ArabicGuidesPage } from './components/arabic/ArabicGuidesPage';
 import { getSlugFromId } from './utils/slugs';
 
 export default function App() {
@@ -53,6 +56,29 @@ export default function App() {
           <Route path="/calculators/:slug" element={<CalculatorPageRoute />} />
           <Route path="/categories" element={<CategoriesDirectoryPage />} />
           <Route path="/categories/:categoryId" element={<CategoryDetailPage />} />
+
+          {/* User Requested Hierarchical Category Slugs */}
+          <Route path="/concrete/:slug" element={<CalculatorPageRoute />} />
+          <Route path="/rebar-steel/:slug" element={<CalculatorPageRoute />} />
+          <Route path="/masonry-mortar/:slug" element={<CalculatorPageRoute />} />
+          <Route path="/earthwork/:slug" element={<CalculatorPageRoute />} />
+          <Route path="/finishes/:slug" element={<CalculatorPageRoute />} />
+          <Route path="/structural/:slug" element={<CalculatorPageRoute />} />
+          <Route path="/cost-estimation/:slug" element={<CalculatorPageRoute />} />
+
+          {/* Saudi Construction Suite */}
+          <Route path="/saudi" element={<CalculatorPageRoute />} />
+          <Route path="/saudi/:slug" element={<CalculatorPageRoute />} />
+
+          {/* Quick Engineering Unit Converters */}
+          <Route path="/converters" element={<QuickConverterPage />} />
+          <Route path="/converters/:slug" element={<QuickConverterPage />} />
+
+          {/* Arabic Calculators & Engineering Guides */}
+          <Route path="/ar/calculators" element={<ArabicCalculatorPage />} />
+          <Route path="/ar/calculators/:slug" element={<ArabicCalculatorPage />} />
+          <Route path="/ar/guides" element={<ArabicGuidesPage />} />
+          <Route path="/ar/guides/:slug" element={<ArabicGuidesPage />} />
           
           {/* Construction Estimation Workspace */}
           <Route path="/projects" element={<ProjectsDashboard />} />
